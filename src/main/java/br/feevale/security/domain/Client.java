@@ -30,9 +30,6 @@ public class Client {
     @Column(name = "name", columnDefinition = "varchar(256)", nullable = false)
     private String name;
 
-    @Column(name = "email", columnDefinition = "varchar(256)", nullable = false)
-    private String email;
-
     @Column(name = "password", columnDefinition = "varchar(128)", nullable = false)
     private String password;
 

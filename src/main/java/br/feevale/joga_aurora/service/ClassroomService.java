@@ -53,7 +53,7 @@ public class ClassroomService {
 
         boolean attendanceDone = lessonRepository.existsByClassroom_IdAndLessonDate(Objects.requireNonNull(result).getId(), Date.valueOf(LocalDate.now()));
 
-        final var response = ClassroomMapper.toResponseWithStudents(result, attendanceDone);
+        final var response = ClassroomMapper.toCompleteResponse(result, attendanceDone);
 
         log.info("status={} id={} response={} timeMillis={}", FINISHED, id, JsonUtil.objectToJson(response), Duration.between(start, Instant.now()).toMillis());
         return response;
@@ -70,7 +70,7 @@ public class ClassroomService {
 
         final var result = repository.save(entity);
 
-        final var response = ClassroomMapper.toResponseWithStudents(result, null);
+        final var response = ClassroomMapper.toCompleteResponse(result, null);
 
         log.info("status={} request={} response={} timeMillis={}", FINISHED, JsonUtil.objectToJson(request), JsonUtil.objectToJson(response), Duration.between(start, Instant.now()).toMillis());
         return response;
@@ -90,7 +90,7 @@ public class ClassroomService {
 
         boolean attendanceDone = lessonRepository.existsByClassroom_IdAndLessonDate(Objects.requireNonNull(result).getId(), Date.valueOf(LocalDate.now()));
 
-        final var response = ClassroomMapper.toResponseWithStudents(result, attendanceDone);
+        final var response = ClassroomMapper.toCompleteResponse(result, attendanceDone);
 
         log.info("status={} id={} request={} response={} timeMillis={}", FINISHED, id, JsonUtil.objectToJson(request), JsonUtil.objectToJson(response), Duration.between(start, Instant.now()).toMillis());
         return response;

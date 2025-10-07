@@ -23,14 +23,6 @@ public class GlobalExceptionHandler {
         String message
     ) {}
 
-    private ErrorResponse buildErrorResponse(final HttpStatus status, final String message) {
-        return new ErrorResponse(LocalDateTime.now(), status.value(), status.getReasonPhrase(), message);
-    }
-
-    private ErrorResponse buildErrorResponse(final HttpStatus status, final String error, final String message) {
-        return new ErrorResponse(LocalDateTime.now(), status.value(), error, message);
-    }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(final Exception ex) {
         final var status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -80,6 +72,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(status)
                 .body(buildErrorResponse(status, message));
+    }
+
+    private ErrorResponse buildErrorResponse(final HttpStatus status, final String message) {
+        return new ErrorResponse(LocalDateTime.now(), status.value(), status.getReasonPhrase(), message);
+    }
+
+    private ErrorResponse buildErrorResponse(final HttpStatus status, final String error, final String message) {
+        return new ErrorResponse(LocalDateTime.now(), status.value(), error, message);
     }
 
     private String extractError(final MethodArgumentNotValidException ex) {

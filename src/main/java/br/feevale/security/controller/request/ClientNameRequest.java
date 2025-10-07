@@ -1,16 +1,16 @@
 package br.feevale.security.controller.request;
 
-import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ClientEmailRequest {
+public class ClientNameRequest {
 
     @NotBlank
-    @Email
-    private String email;
+    @Min(5)
+    private String name;
 
 }

@@ -15,8 +15,8 @@ import java.util.Objects;
 @Getter
 @Setter
 public class ClientResponse {
+
     private String name;
-    private String email;
     private boolean active;
     private List<String> permissions;
 
@@ -27,12 +27,12 @@ public class ClientResponse {
         ClientResponse that = (ClientResponse) o;
         return active == that.active &&
                 Objects.equals(name, that.name) &&
-                Objects.equals(email, that.email) &&
                 Objects.equals(permissions, that.permissions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, email, active, permissions);
+        return Objects.hash(name, active, permissions);
     }
+
 }

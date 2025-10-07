@@ -1,5 +1,6 @@
 package br.feevale.joga_aurora.entity;
 
+import br.feevale.joga_aurora.enums.RiskReferenceEnum;
 import br.feevale.joga_aurora.enums.converter.RiskReferenceEnumConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -37,34 +38,34 @@ public class PhysicalTestEntity {
 
     @Convert(converter = RiskReferenceEnumConverter.class)
     @Column(name = "six_minutes_reference", nullable = false, columnDefinition = "char(1)")
-    private String sixMinutesReference;
+    private RiskReferenceEnum sixMinutesReference;
 
     @Column(name = "flex_test", nullable = false, columnDefinition = "decimal(6,2)")
     private Double flexTest;
 
     @Convert(converter = RiskReferenceEnumConverter.class)
     @Column(name = "flex_reference", nullable = false, columnDefinition = "char(1)")
-    private String flexReference;
+    private RiskReferenceEnum flexReference;
 
     @Column(name = "rml_test", nullable = false, columnDefinition = "decimal(6,2)")
     private Double rmlTest;
 
     @Convert(converter = RiskReferenceEnumConverter.class)
     @Column(name = "rml_reference", nullable = false, columnDefinition = "char(1)")
-    private String rmlReference;
+    private RiskReferenceEnum rmlReference;
 
     @Column(name = "twenty_meters_test", nullable = false, columnDefinition = "decimal(6,2)")
     private Double twentyMetersTest;
 
     @Convert(converter = RiskReferenceEnumConverter.class)
     @Column(name = "twenty_meters_reference", nullable = false, columnDefinition = "char(1)")
-    private String twentyMetersReference;
+    private RiskReferenceEnum twentyMetersReference;
 
     @Column(name = "throw_two_kg_test", nullable = false, columnDefinition = "decimal(6,2)")
     private Double throwTwoKgTest;
 
     @Convert(converter = RiskReferenceEnumConverter.class)
     @Column(name = "throw_two_kg_reference", nullable = false, columnDefinition = "char(1)")
-    private String throwTwoKgReference;
+    private RiskReferenceEnum throwTwoKgReference;
 
 }

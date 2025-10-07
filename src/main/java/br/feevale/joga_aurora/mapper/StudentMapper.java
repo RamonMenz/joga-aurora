@@ -23,8 +23,7 @@ public final class StudentMapper {
                 null,
                 null,
                 null,
-                ClassroomMapper.toBasicResponse(source.getClassroom())
-        );
+                ClassroomMapper.toBasicResponse(source.getClassroom()));
     }
 
     public static Student toCompleteResponse(final StudentEntity source) {
@@ -36,11 +35,17 @@ public final class StudentMapper {
                 source.getName(),
                 source.getBirthDate(),
                 source.getGender(),
-                Collections.emptyList(),
-                Collections.emptyList(),
-                ClassroomMapper.toBasicResponse(source.getClassroom())
-
-        );
+                Objects.isNull(source.getBodyMeasurementList())
+                        ? Collections.emptyList()
+                        : source.getBodyMeasurementList().stream()
+                        .map(BodyMeasurementMapper::toBasicResponse)
+                        .toList(),
+                Objects.isNull(source.getPhysicalTestList())
+                        ? Collections.emptyList()
+                        : source.getPhysicalTestList().stream()
+                        .map(PhysicalTestMapper::toBasicResponse)
+                        .toList(),
+                ClassroomMapper.toBasicResponse(source.getClassroom()));
     }
 
 }

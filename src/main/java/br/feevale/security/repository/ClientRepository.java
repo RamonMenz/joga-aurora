@@ -6,17 +6,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface ClientRepository extends JpaRepository<Client, String> {
 
-    Client findByEmail(String email);
+    Optional<Client> findByName(final String name);
 
-    Page<Client> findByNameContainingIgnoreCaseOrEmailContainingIgnoreCaseOrderByNameAsc(String name, String email, Pageable pageable);
+    Page<Client> findByNameContainingIgnoreCaseOrderByNameAsc(final String name, final Pageable pageable);
 
     @Query("SELECT c FROM Client c " +
             "WHERE c.active = false " +
-            "AND (LOWER(c.name) LIKE LOWER(CONCAT('%', :text, '%')) " +
-            "OR LOWER(c.email) LIKE LOWER(CONCAT('%', :text, '%'))) " +
+            "AND LOWER(c.name) LIKE LOWER(CONCAT('%', :name, '%')) " +
             "ORDER BY c.name ASC")
-    Page<Client> findInactiveByNameOrEmail(String text, Pageable pageable);
+    Page<Client> findInactiveByName(final String name, final Pageable pageable);
 
 }

@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import static java.util.Objects.isNull;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @AllArgsConstructor
@@ -25,29 +24,24 @@ public class FindClientService {
         return ClientMapper.toResponse(authenticatedClient);
     }
 
-    public Client findById(String id) {
+    public Client findById(final String id) {
         return clientRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Client not found"));
     }
 
-    public Client findByEmail(String email) {
-        Client client = clientRepository.findByEmail(email);
-
-        if (isNull(client)) {
-            throw new ResponseStatusException(NOT_FOUND, "Client not found");
-        }
-
-        return client;
+    public Client findByName(final String name) {
+        return clientRepository.findByName(name)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Client not found"));
     }
 
-    public Page<ClientResponse> findAllByName(String text, boolean inactiveOnly, Pageable pageable) {
+    public Page<ClientResponse> findAllByName(final String name, final boolean inactiveOnly, final Pageable pageable) {
         if (inactiveOnly) {
-            return clientRepository.findInactiveByNameOrEmail(text, pageable)
-                    .map(ClientMapper::toResponse);
-        } else {
-            return clientRepository.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCaseOrderByNameAsc(text, text, pageable)
+            return clientRepository.findInactiveByName(name, pageable)
                     .map(ClientMapper::toResponse);
         }
+
+        return clientRepository.findByNameContainingIgnoreCaseOrderByNameAsc(name, pageable)
+                    .map(ClientMapper::toResponse);
     }
 
 }

@@ -1,6 +1,6 @@
 package br.feevale.security.service;
 
-import br.feevale.security.controller.request.ClientEmailRequest;
+import br.feevale.security.controller.request.ClientNameRequest;
 import br.feevale.security.controller.response.ClientResponse;
 import br.feevale.security.domain.Client;
 import br.feevale.security.domain.Permission;
@@ -24,8 +24,8 @@ public class ChangeClientPermissionsService {
 
 
     @Transactional
-    public ClientResponse changeAdminPermission(ClientEmailRequest request) {
-        Client client = findClientService.findByEmail(request.getEmail());
+    public ClientResponse changeAdminPermission(ClientNameRequest request) {
+        Client client = findClientService.findByName(request.getName());
 
         Optional<Permission> adminPermission = client.getPermissions().stream()
                 .filter(permission -> ADMIN_PERMISSION.equals(permission.getName()))

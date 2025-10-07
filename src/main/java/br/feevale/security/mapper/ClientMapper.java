@@ -14,14 +14,12 @@ public class ClientMapper {
     public static Client toEntity(ClientRequest request) {
         Client entity = new Client();
         entity.setName(request.getName());
-        entity.setEmail(request.getEmail());
         return entity;
     }
 
     public static ClientResponse toResponse(Client entity) {
         return ClientResponse.builder()
                 .name(entity.getName())
-                .email(entity.getEmail())
                 .active(entity.isActive())
                 .permissions(buildPermissionsResponse(entity.getPermissions()))
                 .build();

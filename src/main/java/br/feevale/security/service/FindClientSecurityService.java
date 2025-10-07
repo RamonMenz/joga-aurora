@@ -16,8 +16,9 @@ public class FindClientSecurityService implements UserDetailsService {
     private ClientRepository clientRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Client client = clientRepository.findByEmail(email);
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+        Client client = clientRepository.findByName(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
         return new ClientSecurity(client);
     }
 

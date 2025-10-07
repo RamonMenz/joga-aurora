@@ -18,7 +18,7 @@ public final class ClassroomMapper {
         return getClassroomResponse(source, null, null);
     }
 
-    public static Classroom toResponseWithStudents(final ClassroomEntity source, final Boolean attendanceDone) {
+    public static Classroom toCompleteResponse(final ClassroomEntity source, final Boolean attendanceDone) {
         return getClassroomResponse(
                 source,
                 attendanceDone,
@@ -26,8 +26,7 @@ public final class ClassroomMapper {
                         ? Collections.emptyList()
                         : source.getStudentList().stream()
                         .map(StudentMapper::toBasicResponse)
-                        .toList()
-        );
+                        .toList());
     }
 
     private static Classroom getClassroomResponse(final ClassroomEntity source, final Boolean attendanceDone, final List<Student> students) {
@@ -39,8 +38,7 @@ public final class ClassroomMapper {
                 source.getName(),
                 source.getYear(),
                 attendanceDone,
-                students
-        );
+                students);
     }
 
 }

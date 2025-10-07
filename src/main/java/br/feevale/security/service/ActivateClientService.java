@@ -1,6 +1,6 @@
 package br.feevale.security.service;
 
-import br.feevale.security.controller.request.ClientEmailRequest;
+import br.feevale.security.controller.request.ClientNameRequest;
 import br.feevale.security.controller.response.ClientResponse;
 import br.feevale.security.domain.Client;
 import br.feevale.security.mapper.ClientMapper;
@@ -17,8 +17,8 @@ public class ActivateClientService {
     private ClientRepository clientRepository;
 
     @Transactional
-    public ClientResponse changeActiveStatus(ClientEmailRequest request) {
-        Client client = findClientService.findByEmail(request.getEmail());
+    public ClientResponse changeActiveStatus(ClientNameRequest request) {
+        Client client = findClientService.findByName(request.getName());
         client.setActive(!client.isActive());
 
         clientRepository.save(client);

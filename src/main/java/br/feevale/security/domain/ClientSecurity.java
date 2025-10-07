@@ -14,14 +14,14 @@ public class ClientSecurity implements UserDetails {
     @Getter
     private final String id;
 
-    private final String email;
+    private final String name;
     private final String password;
     private final boolean active;
     private final List<SimpleGrantedAuthority> permissions;
 
     public ClientSecurity(Client client) {
         this.id = client.getId();
-        this.email = client.getEmail();
+        this.name = client.getName();
         this.password = client.getPassword();
         this.active = client.isActive();
         this.permissions = convertPermissions(client);
@@ -45,7 +45,7 @@ public class ClientSecurity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.email;
+        return this.name;
     }
 
     @Override

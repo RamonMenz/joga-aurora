@@ -1,5 +1,6 @@
 package br.feevale.joga_aurora.entity;
 
+import br.feevale.joga_aurora.enums.RiskReferenceEnum;
 import br.feevale.joga_aurora.enums.converter.RiskReferenceEnumConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -46,13 +47,13 @@ public class BodyMeasurementEntity {
 
     @Convert(converter = RiskReferenceEnumConverter.class)
     @Column(name = "bmi_reference", nullable = false, columnDefinition = "char(1)")
-    private String bmiReference;
+    private RiskReferenceEnum bmiReference;
 
     @Column(name = "waist_height_ratio", nullable = false, columnDefinition = "decimal(5,2)")
     private Double waistHeightRatio;
 
     @Convert(converter = RiskReferenceEnumConverter.class)
-    @Column(name = "waist_height_reference", nullable = false, columnDefinition = "char(1)")
-    private String waistHeightReference;
+    @Column(name = "waist_height_ratio_reference", nullable = false, columnDefinition = "char(1)")
+    private RiskReferenceEnum waistHeightRatioReference;
 
 }

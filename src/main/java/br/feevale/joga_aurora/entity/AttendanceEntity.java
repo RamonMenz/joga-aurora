@@ -1,5 +1,6 @@
 package br.feevale.joga_aurora.entity;
 
+import br.feevale.joga_aurora.enums.AttendanceStatusEnum;
 import br.feevale.joga_aurora.enums.converter.AttendanceStatusEnumConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -33,6 +34,6 @@ public class AttendanceEntity {
 
     @Convert(converter = AttendanceStatusEnumConverter.class)
     @Column(name = "status", nullable = false, columnDefinition = "char(1)")
-    private String status;
+    private AttendanceStatusEnum status;
 
 }

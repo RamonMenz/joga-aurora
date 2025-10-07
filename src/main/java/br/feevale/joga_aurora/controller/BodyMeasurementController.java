@@ -1,7 +1,7 @@
 package br.feevale.joga_aurora.controller;
 
-import br.feevale.joga_aurora.model.Classroom;
-import br.feevale.joga_aurora.service.ClassroomService;
+import br.feevale.joga_aurora.model.BodyMeasurement;
+import br.feevale.joga_aurora.service.BodyMeasurementService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -19,44 +19,44 @@ import java.util.Objects;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/turma")
-public class ClassroomController {
+@RequestMapping("/medida-corporal")
+public class BodyMeasurementController {
 
-    private final ClassroomService service;
+    private final BodyMeasurementService service;
 
     @GetMapping
     public ResponseEntity<?> getAll(final Pageable pageable) {
-        final var classroomPage = service.getAll(pageable);
+        final var bodyMeasurementPage = service.getAll(pageable);
 
-        return ResponseEntity.ok(classroomPage);
+        return ResponseEntity.ok(bodyMeasurementPage);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable final String id) {
-        final var classroom = service.getById(id);
+        final var bodyMeasurement = service.getById(id);
 
-        if (Objects.nonNull(classroom))
-            return ResponseEntity.ok(classroom);
+        if (Objects.nonNull(bodyMeasurement))
+            return ResponseEntity.ok(bodyMeasurement);
 
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> insert(@RequestBody final Classroom request) {
-        final var classroom = service.insert(request);
+    public ResponseEntity<?> insert(@RequestBody final BodyMeasurement request) {
+        final var bodyMeasurement = service.insert(request);
 
-        if (Objects.nonNull(classroom))
-            return ResponseEntity.status(HttpStatus.CREATED).body(classroom);
+        if (Objects.nonNull(bodyMeasurement))
+            return ResponseEntity.status(HttpStatus.CREATED).body(bodyMeasurement);
 
         return ResponseEntity.badRequest().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable final String id, @RequestBody final Classroom request) {
-        final var classroom = service.update(id, request);
+    public ResponseEntity<?> update(@PathVariable final String id, @RequestBody final BodyMeasurement request) {
+        final var bodyMeasurement = service.update(id, request);
 
-        if (Objects.nonNull(classroom))
-            return ResponseEntity.ok(classroom);
+        if (Objects.nonNull(bodyMeasurement))
+            return ResponseEntity.ok(bodyMeasurement);
 
         return ResponseEntity.notFound().build();
     }

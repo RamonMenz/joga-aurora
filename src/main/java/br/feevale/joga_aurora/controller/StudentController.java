@@ -19,7 +19,7 @@ import java.util.Objects;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/estudante")
 public class StudentController {
 
     private final StudentService service;

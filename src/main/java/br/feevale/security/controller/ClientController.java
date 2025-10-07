@@ -1,6 +1,6 @@
 package br.feevale.security.controller;
 
-import br.feevale.security.controller.request.ClientEmailRequest;
+import br.feevale.security.controller.request.ClientNameRequest;
 import br.feevale.security.controller.request.ClientRequest;
 import br.feevale.security.controller.request.UpdateClientRequest;
 import br.feevale.security.controller.response.ClientResponse;
@@ -52,13 +52,13 @@ public class ClientController {
 
     @Secured("ROLE_ADMIN")
     @PutMapping("/change-active-status")
-    public ClientResponse changeActiveStatus(@Valid @RequestBody ClientEmailRequest request) {
+    public ClientResponse changeActiveStatus(@Valid @RequestBody ClientNameRequest request) {
         return activateClientService.changeActiveStatus(request);
     }
 
     @Secured("ROLE_ADMIN")
     @PutMapping("/change-admin-permission")
-    public ClientResponse changeAdminPermission(@Valid @RequestBody ClientEmailRequest request) {
+    public ClientResponse changeAdminPermission(@Valid @RequestBody ClientNameRequest request) {
         return changeClientPermissionsService.changeAdminPermission(request);
     }
 
