@@ -10,8 +10,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Objects;
 
 import static br.feevale.joga_aurora.enums.LogStatusEnum.FINISHED;
 import static br.feevale.joga_aurora.enums.LogStatusEnum.STARTED;
@@ -50,7 +53,7 @@ public class LessonService {
 
         final var entity = new LessonEntity();
         entity.setClassroom(request.classroom());
-        entity.setLessonDate(request.lessonDate());
+        entity.setLessonDate(Objects.nonNull(request.lessonDate()) ? request.lessonDate() : Date.valueOf(LocalDate.now()));
 
         final var result = repository.save(entity);
 
@@ -65,7 +68,7 @@ public class LessonService {
         final var result = repository.findById(id)
                 .map(it -> {
                     it.setClassroom(request.classroom());
-                    it.setLessonDate(request.lessonDate());
+                    it.setLessonDate(Objects.nonNull(request.lessonDate()) ? request.lessonDate() : Date.valueOf(LocalDate.now()));
                     return repository.save(it);
                 }).orElse(null);
 

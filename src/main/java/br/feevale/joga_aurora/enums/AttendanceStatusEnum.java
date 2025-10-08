@@ -1,5 +1,6 @@
 package br.feevale.joga_aurora.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,6 +16,7 @@ public enum AttendanceStatusEnum {
     private final String code;
     private final String description;
 
+    @JsonCreator
     public static AttendanceStatusEnum fromCode(final String code) {
         for (AttendanceStatusEnum a : values()) {
             if (a.code.equals(code)) {

@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.time.Duration;
 import java.time.Instant;
@@ -130,16 +132,15 @@ public class BodyMeasurementService {
     }
 
     private Double calculateBmi(final Double weight, final Integer height) {
-        final var heightInMeters = height / 100.0;
-        return weight / Math.pow(heightInMeters, 2);
+        return BigDecimal.valueOf(weight / Math.pow((double) height / 100.0, 2)).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
     private RiskReferenceEnum calculateBmiReference(final Double bmi, final StudentEntity student) {
         return bmi > REFERENCE_TABLE.getReference(student).bmi() ? RISK : NO_RISK;
     }
 
-    private Double calculateWaistHeightRatio(final Double waist, final Integer height) {
-        return waist / height;
+    private Double calculateWaistHeightRatio(final Integer waist, final Integer height) {
+        return BigDecimal.valueOf((double) waist / height).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
     private RiskReferenceEnum calculateWaistHeightRatioReference(final Double waistHeightRatio, final StudentEntity student) {

@@ -33,8 +33,8 @@ public class BodyMeasurementEntity {
     @Column(name = "collection_date", nullable = false, columnDefinition = "date")
     private Date collectionDate;
 
-    @Column(name = "waist", nullable = false, columnDefinition = "decimal(5,2)")
-    private Double waist;
+    @Column(name = "waist", nullable = false, columnDefinition = "integer")
+    private Integer waist;
 
     @Column(name = "weight", nullable = false, columnDefinition = "decimal(5,2)")
     private Double weight;

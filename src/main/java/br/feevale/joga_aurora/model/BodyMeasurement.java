@@ -1,10 +1,12 @@
 package br.feevale.joga_aurora.model;
 
 import br.feevale.joga_aurora.enums.RiskReferenceEnum;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.sql.Date;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public record BodyMeasurement(
 
         String id,
@@ -16,7 +18,7 @@ public record BodyMeasurement(
         Date collectionDate,
 
         @JsonProperty("cintura")
-        Double waist,
+        Integer waist,
 
         @JsonProperty("peso")
         Double weight,

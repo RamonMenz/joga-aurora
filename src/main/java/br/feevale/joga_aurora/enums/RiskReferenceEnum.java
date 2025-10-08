@@ -1,5 +1,6 @@
 package br.feevale.joga_aurora.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -21,6 +22,11 @@ public enum RiskReferenceEnum {
             }
         }
         return null;
+    }
+
+    @JsonValue
+    public String getDescription() {
+        return this.description;
     }
 
 }

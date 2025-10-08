@@ -134,15 +134,15 @@ public class PhysicalTestService {
     }
 
     private static RiskReferenceEnum calculateSixMinutesReference(final Double sixMinutes, final StudentEntity student) {
-        return sixMinutes > REFERENCE_TABLE.getReference(student).sixMinutes() ? RISK : NO_RISK;
+        return sixMinutes < REFERENCE_TABLE.getReference(student).sixMinutes() ? RISK : NO_RISK;
     }
 
     private static RiskReferenceEnum calculateFlexReference(final Double flex, final StudentEntity student) {
-        return flex > REFERENCE_TABLE.getReference(student).flex() ? RISK : NO_RISK;
+        return flex < REFERENCE_TABLE.getReference(student).flex() ? RISK : NO_RISK;
     }
 
     private static RiskReferenceEnum calculateRmlReference(final Double rml, final StudentEntity student) {
-        return rml > REFERENCE_TABLE.getReference(student).rml() ? RISK : NO_RISK;
+        return rml < REFERENCE_TABLE.getReference(student).rml() ? RISK : NO_RISK;
     }
 
     private static RiskReferenceEnum calculateTwentyMetersReference(final Double twentyMeters, final StudentEntity student) {
@@ -150,7 +150,7 @@ public class PhysicalTestService {
     }
 
     private static RiskReferenceEnum calculateThrowTwoKgReference(final Double throwTwoKg, final StudentEntity student) {
-        return throwTwoKg > REFERENCE_TABLE.getReference(student).throwTwoKg() ? RISK : NO_RISK;
+        return throwTwoKg < REFERENCE_TABLE.getReference(student).throwTwoKg() ? RISK : NO_RISK;
     }
 
 }

@@ -65,10 +65,8 @@ public class ClassroomService {
         log.info("status={} request={}", STARTED, JsonUtil.objectToJson(request));
 
         final var entity = new ClassroomEntity();
-        entity.setName(request.name());
-        entity.setYear(request.year());
 
-        final var result = repository.save(entity);
+        final var result = saveClassroomEntity(entity, request);
 
         final var response = ClassroomMapper.toCompleteResponse(result, false);
 
@@ -82,11 +80,7 @@ public class ClassroomService {
         log.info("status={} id={} request={}", STARTED, id, JsonUtil.objectToJson(request));
 
         final var result = repository.findById(id)
-                .map(it -> {
-                    it.setName(request.name());
-                    it.setYear(request.year());
-                    return repository.save(it);
-                }).orElse(null);
+                .map(it -> saveClassroomEntity(it, request)).orElse(null);
 
         boolean attendanceDone = lessonRepository.existsByClassroom_IdAndLessonDate(Objects.requireNonNull(result).getId(), Date.valueOf(LocalDate.now()));
 
@@ -111,6 +105,13 @@ public class ClassroomService {
 
         log.info("status={} id={} response={} timeMillis={}", FINISHED, id, response, Duration.between(start, Instant.now()).toMillis());
         return result;
+    }
+
+    private ClassroomEntity saveClassroomEntity(final ClassroomEntity entity, final Classroom request) {
+        entity.setName(request.name());
+        entity.setYear(request.year());
+
+        return repository.save(entity);
     }
 
 }
