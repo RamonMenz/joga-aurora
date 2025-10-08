@@ -3,6 +3,7 @@ package br.feevale.joga_aurora.util;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -31,6 +32,13 @@ public final class JsonUtil {
         } catch (final JsonProcessingException e) {
             return "";
         }
+    }
+
+    public static <T> JsonNode objectToJsonNode(final T object) {
+        if (Objects.isNull(object))
+            return MAPPER.createObjectNode();
+
+        return MAPPER.valueToTree(object);
     }
 
 }
