@@ -70,7 +70,7 @@ public class ClassroomService {
 
         final var result = repository.save(entity);
 
-        final var response = ClassroomMapper.toCompleteResponse(result, null);
+        final var response = ClassroomMapper.toCompleteResponse(result, false);
 
         log.info("status={} request={} response={} timeMillis={}", FINISHED, JsonUtil.objectToJson(request), JsonUtil.objectToJson(response), Duration.between(start, Instant.now()).toMillis());
         return response;

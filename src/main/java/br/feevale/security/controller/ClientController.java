@@ -27,24 +27,29 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 @RequestMapping("/client")
 public class ClientController {
 
-    private AddClientService addClientService;
-    private UpdateClientService updateClientService;
-    private RemoveClientService removeClientService;
-    private ActivateClientService activateClientService;
-    private ChangeClientPermissionsService changeClientPermissionsService;
-    private FindClientService findClientService;
+    private final AddClientService addClientService;
+    private final UpdateClientService updateClientService;
+    private final RemoveClientService removeClientService;
+    private final ActivateClientService activateClientService;
+    private final ChangeClientPermissionsService changeClientPermissionsService;
+    private final FindClientService findClientService;
 
     @PostMapping
-    public ClientResponse add(@Valid @RequestBody ClientRequest request) {
+    public ClientResponse add(@Valid @RequestBody final ClientRequest request) {
         return addClientService.add(request);
     }
 
-    @PutMapping
-    public ClientResponse update(@Valid @RequestBody UpdateClientRequest request) {
+    @PutMapping("/me")
+    public ClientResponse update(@Valid @RequestBody final UpdateClientRequest request) {
         return updateClientService.update(request);
     }
 
-    @DeleteMapping
+    @GetMapping("/me")
+    public ClientResponse find() {
+        return findClientService.find();
+    }
+
+    @DeleteMapping("/me")
     @ResponseStatus(NO_CONTENT)
     public void remove() {
         removeClientService.remove();
@@ -52,26 +57,22 @@ public class ClientController {
 
     @Secured("ROLE_ADMIN")
     @PutMapping("/change-active-status")
-    public ClientResponse changeActiveStatus(@Valid @RequestBody ClientNameRequest request) {
+    public ClientResponse changeActiveStatus(@Valid @RequestBody final ClientNameRequest request) {
         return activateClientService.changeActiveStatus(request);
     }
 
     @Secured("ROLE_ADMIN")
     @PutMapping("/change-admin-permission")
-    public ClientResponse changeAdminPermission(@Valid @RequestBody ClientNameRequest request) {
+    public ClientResponse changeAdminPermission(@Valid @RequestBody final ClientNameRequest request) {
         return changeClientPermissionsService.changeAdminPermission(request);
     }
 
     @Secured("ROLE_ADMIN")
     @GetMapping
-    public Page<ClientResponse> findAll(@RequestParam(required = false, defaultValue = "") String text,
-                                        @RequestParam(required = false, defaultValue = "false") boolean inactiveOnly,
-                                        Pageable pageable) {
+    public Page<ClientResponse> findAll(@RequestParam(required = false, defaultValue = "") final String text,
+                                        @RequestParam(required = false, defaultValue = "false") final boolean inactiveOnly,
+                                        final Pageable pageable) {
         return findClientService.findAllByName(text, inactiveOnly, pageable);
     }
 
-    @GetMapping("/me")
-    public ClientResponse find() {
-        return findClientService.find();
-    }
 }

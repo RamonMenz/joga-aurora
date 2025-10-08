@@ -1,6 +1,5 @@
 package br.feevale.security.service;
 
-import br.feevale.security.domain.Client;
 import br.feevale.security.domain.ClientSecurity;
 import br.feevale.security.repository.ClientRepository;
 import lombok.AllArgsConstructor;
@@ -13,11 +12,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class FindClientSecurityService implements UserDetailsService {
 
-    private ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        Client client = clientRepository.findByName(username)
+        final var client = clientRepository.findByName(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
         return new ClientSecurity(client);
     }

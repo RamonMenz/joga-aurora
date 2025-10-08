@@ -17,7 +17,6 @@ public class UpdateClientRequest {
     @Min(8)
     private String currentPassword;
 
-    @NotBlank
     @Min(8)
     private String newPassword;
 

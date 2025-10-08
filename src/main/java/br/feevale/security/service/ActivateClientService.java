@@ -2,7 +2,6 @@ package br.feevale.security.service;
 
 import br.feevale.security.controller.request.ClientNameRequest;
 import br.feevale.security.controller.response.ClientResponse;
-import br.feevale.security.domain.Client;
 import br.feevale.security.mapper.ClientMapper;
 import br.feevale.security.repository.ClientRepository;
 import lombok.AllArgsConstructor;
@@ -13,17 +12,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ActivateClientService {
 
-    private FindClientService findClientService;
-    private ClientRepository clientRepository;
+    private final FindClientService findClientService;
+    private final ClientRepository clientRepository;
 
     @Transactional
-    public ClientResponse changeActiveStatus(ClientNameRequest request) {
-        Client client = findClientService.findByName(request.getName());
+    public ClientResponse changeActiveStatus(final ClientNameRequest request) {
+        final var client = findClientService.findByName(request.getName());
+
         client.setActive(!client.isActive());
 
-        clientRepository.save(client);
+        final var result = clientRepository.save(client);
 
-        return ClientMapper.toResponse(client);
+        return ClientMapper.toResponse(result);
     }
-}
 
+}

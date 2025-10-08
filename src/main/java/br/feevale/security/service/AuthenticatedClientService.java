@@ -4,7 +4,6 @@ import br.feevale.security.domain.Client;
 import br.feevale.security.domain.ClientSecurity;
 import br.feevale.security.repository.ClientRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,17 +14,18 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @Service
 public class AuthenticatedClientService {
 
-    private ClientRepository clientRepository;
+    private static final String USER_NOT_FOUND_MESSAGE = "Usuário não existente ou não autenticado";
+    private final ClientRepository clientRepository;
 
     public String getId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        ClientSecurity clientSecurity = (ClientSecurity) authentication.getPrincipal();
+        final var authentication = SecurityContextHolder.getContext().getAuthentication();
+        final var clientSecurity = (ClientSecurity) authentication.getPrincipal();
         return clientSecurity.getId();
     }
 
     public Client get() {
         return clientRepository.findById(getId())
-                .orElseThrow(() -> new ResponseStatusException(INTERNAL_SERVER_ERROR, "User does not exist or is not authenticated"));
+                .orElseThrow(() -> new ResponseStatusException(INTERNAL_SERVER_ERROR, USER_NOT_FOUND_MESSAGE));
     }
 
 }

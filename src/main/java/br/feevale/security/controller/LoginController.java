@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/login")
 public class LoginController {
 
-    private FindClientService findClientService;
+    private final FindClientService findClientService;
 
     @PostMapping
     public ClientResponse login() {

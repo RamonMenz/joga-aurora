@@ -16,31 +16,27 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @Service
 public class FindClientService {
 
-    private ClientRepository clientRepository;
-    private AuthenticatedClientService authenticatedClientService;
+    private static final String USER_NOT_FOUND_MESSAGE = "Usuário não encontrado";
+    private final ClientRepository clientRepository;
+    private final AuthenticatedClientService authenticatedClientService;
 
     public ClientResponse find() {
-        Client authenticatedClient = authenticatedClientService.get();
+        final var authenticatedClient = authenticatedClientService.get();
         return ClientMapper.toResponse(authenticatedClient);
-    }
-
-    public Client findById(final String id) {
-        return clientRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Client not found"));
     }
 
     public Client findByName(final String name) {
         return clientRepository.findByName(name)
-                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Client not found"));
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, USER_NOT_FOUND_MESSAGE));
     }
 
     public Page<ClientResponse> findAllByName(final String name, final boolean inactiveOnly, final Pageable pageable) {
         if (inactiveOnly) {
-            return clientRepository.findInactiveByName(name, pageable)
+            return clientRepository.findByNameContainingIgnoreCaseOrderByNameAsc(name, pageable)
                     .map(ClientMapper::toResponse);
         }
 
-        return clientRepository.findByNameContainingIgnoreCaseOrderByNameAsc(name, pageable)
+        return clientRepository.findByActiveIsFalseAndNameContainingIgnoreCaseOrderByNameAsc(name, pageable)
                     .map(ClientMapper::toResponse);
     }
 

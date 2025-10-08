@@ -1,6 +1,7 @@
 package br.feevale.joga_aurora.config;
 
 import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +12,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-//@ControllerAdvice
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final String VALIDATION_ERROR_MESSAGE = "Erro de validação";
 
     public record ErrorResponse (
         LocalDateTime timestamp,
@@ -29,30 +33,26 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(status)
-                .body(buildErrorResponse(status, status.getReasonPhrase(), ex.getMessage()));
+                .body(buildAndLogErrorResponse(status, status.getReasonPhrase(), ex.getMessage()));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponse> handleDataIntegrityViolation(final DataIntegrityViolationException ex) {
-        final var message = "Violação de integridade dos dados. Verifique se já existe um registro com os mesmos valores.";
         final var status = HttpStatus.BAD_REQUEST;
 
         return ResponseEntity
                 .status(status)
-                .body(buildErrorResponse(status, message));
+                .body(buildAndLogErrorResponse(status, null, ex.getMessage()));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleConstraintViolation(final ConstraintViolationException ex) {
-        final var message = ex.getConstraintViolations().stream()
-                .map(v -> v.getPropertyPath() + " " + v.getMessage())
-                .findFirst()
-                .orElse("Erro de validação.");
+        final var message = extractError(ex);
         final var status = HttpStatus.BAD_REQUEST;
 
         return ResponseEntity
                 .status(status)
-                .body(buildErrorResponse(status, message));
+                .body(buildAndLogErrorResponse(status, null, message));
     }
 
     @ExceptionHandler(ResponseStatusException.class)
@@ -61,7 +61,7 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(status)
-                .body(buildErrorResponse(HttpStatus.valueOf(status), ex.getReason(), ex.getMessage()));
+                .body(buildAndLogErrorResponse(HttpStatus.valueOf(status), ex.getReason(), ex.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -71,22 +71,32 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(status)
-                .body(buildErrorResponse(status, message));
+                .body(buildAndLogErrorResponse(status, null, message));
     }
 
-    private ErrorResponse buildErrorResponse(final HttpStatus status, final String message) {
-        return new ErrorResponse(LocalDateTime.now(), status.value(), status.getReasonPhrase(), message);
+    private ErrorResponse buildAndLogErrorResponse(final HttpStatus status, final String error, final String message) {
+        ErrorResponse errorResponse;
+        if (Objects.isNull(error))
+            errorResponse = new ErrorResponse(LocalDateTime.now(), status.value(), status.getReasonPhrase(), message);
+        else
+            errorResponse = new ErrorResponse(LocalDateTime.now(), status.value(), error, message);
+
+        log.error("errorResponse={}", errorResponse);
+        return errorResponse;
     }
 
-    private ErrorResponse buildErrorResponse(final HttpStatus status, final String error, final String message) {
-        return new ErrorResponse(LocalDateTime.now(), status.value(), error, message);
+    private static String extractError(final ConstraintViolationException ex) {
+        return ex.getConstraintViolations().stream()
+                .map(v -> v.getPropertyPath() + " " + v.getMessage())
+                .findFirst()
+                .orElse(VALIDATION_ERROR_MESSAGE);
     }
 
-    private String extractError(final MethodArgumentNotValidException ex) {
+    private static String extractError(final MethodArgumentNotValidException ex) {
         final var error = ex.getBindingResult().getAllErrors().stream().findFirst();
 
         if (error.isEmpty())
-            return "erro de validação";
+            return VALIDATION_ERROR_MESSAGE;
 
         final var fieldError = (FieldError) error.get();
 

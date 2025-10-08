@@ -2,6 +2,7 @@ package br.feevale.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,24 +25,22 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
-        http
+    public SecurityFilterChain securityFilterChain(final HttpSecurity http, final CorsConfigurationSource corsConfigurationSource) throws Exception {
+        return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers(HttpMethod.POST, "/client").permitAll()
-                        .anyRequest().authenticated()
-                )
+                        .requestMatchers(HttpMethod.POST, "/client").permitAll()
+                        .anyRequest().authenticated())
                 .httpBasic(httpBasic -> httpBasic
                         .authenticationEntryPoint(
-                                (request, response, authException) -> response.setStatus(HttpStatus.UNAUTHORIZED.value()))
-                        .securityContextRepository(new HttpSessionSecurityContextRepository())
-                )
+                                (request, response, authException) ->
+                                        response.setStatus(HttpStatus.UNAUTHORIZED.value()))
+                        .securityContextRepository(new HttpSessionSecurityContextRepository()))
                 .logout(logout -> logout
-                        .logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpStatus.OK.value()))
-                );
-
-        return http.build();
+                        .logoutSuccessHandler((request, response, authentication) ->
+                                response.setStatus(HttpStatus.OK.value())))
+                .build();
     }
 
 }

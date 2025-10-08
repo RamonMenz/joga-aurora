@@ -19,7 +19,7 @@ public class ClientSecurity implements UserDetails {
     private final boolean active;
     private final List<SimpleGrantedAuthority> permissions;
 
-    public ClientSecurity(Client client) {
+    public ClientSecurity(final Client client) {
         this.id = client.getId();
         this.name = client.getName();
         this.password = client.getPassword();
@@ -27,9 +27,10 @@ public class ClientSecurity implements UserDetails {
         this.permissions = convertPermissions(client);
     }
 
-    private List<SimpleGrantedAuthority> convertPermissions(Client client) {
+    private List<SimpleGrantedAuthority> convertPermissions(final Client client) {
         return client.getPermissions().stream()
-                .map(permission -> new SimpleGrantedAuthority(SPRING_PERMISSION_PREFIX + permission.getName()))
+                .map(permission ->
+                        new SimpleGrantedAuthority(SPRING_PERMISSION_PREFIX + permission.getName()))
                 .collect(Collectors.toList());
     }
 

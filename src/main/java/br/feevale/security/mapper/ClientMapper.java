@@ -11,13 +11,17 @@ import static java.util.stream.Collectors.toList;
 
 public class ClientMapper {
 
-    public static Client toEntity(ClientRequest request) {
-        Client entity = new Client();
+    public ClientMapper() {
+        throw new IllegalStateException("Utility class.");
+    }
+
+    public static Client toEntity(final ClientRequest request) {
+        final var entity = new Client();
         entity.setName(request.getName());
         return entity;
     }
 
-    public static ClientResponse toResponse(Client entity) {
+    public static ClientResponse toResponse(final Client entity) {
         return ClientResponse.builder()
                 .name(entity.getName())
                 .active(entity.isActive())
@@ -25,9 +29,10 @@ public class ClientMapper {
                 .build();
     }
 
-    public static List<String> buildPermissionsResponse(List<Permission> permissions) {
+    public static List<String> buildPermissionsResponse(final List<Permission> permissions) {
         return permissions.stream()
                 .map(Permission::getName)
                 .collect(toList());
     }
+
 }

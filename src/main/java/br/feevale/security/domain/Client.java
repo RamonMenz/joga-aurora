@@ -37,9 +37,9 @@ public class Client {
     private boolean active;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Permission> permissions = new ArrayList<>();
+    private final List<Permission> permissions = new ArrayList<>();
 
-    public void addPermission(Permission permission) {
+    public void addPermission(final Permission permission) {
         this.permissions.add(permission);
         permission.setClient(this);
     }

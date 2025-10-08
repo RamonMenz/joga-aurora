@@ -1,6 +1,5 @@
 package br.feevale.security.service;
 
-import br.feevale.security.domain.Client;
 import br.feevale.security.repository.ClientRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,12 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RemoveClientService {
 
-    private AuthenticatedClientService authenticatedClientService;
-    private ClientRepository clientRepository;
+    private final AuthenticatedClientService authenticatedClientService;
+    private final ClientRepository clientRepository;
 
     @Transactional
     public void remove() {
-        Client authenticatedClient = authenticatedClientService.get();
+        final var authenticatedClient = authenticatedClientService.get();
         clientRepository.delete(authenticatedClient);
     }
 

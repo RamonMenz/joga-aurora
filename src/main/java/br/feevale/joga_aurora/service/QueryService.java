@@ -66,13 +66,13 @@ public class QueryService {
             } while (resultSet.next());
         });
 
-        final var resultNode = JsonUtil.objectToJsonNode(result);
+        final var response = JsonUtil.objectToJsonNode(result);
 
-        final var isArray = resultNode.isArray() && resultNode.size() > 1;
-        final var resultLog = isArray ? String.format("size[%s]", resultNode.size()) : JsonUtil.objectToJson(resultNode);
+        final var isArray = response.isArray() && response.size() > 1;
+        final var responseLog = isArray ? String.format("size[%s]", response.size()) : JsonUtil.objectToJson(response);
 
-        log.info("status={} query={} resultNode={} timeMillis={}", FINISHED, queryLog, resultLog, Duration.between(start, Instant.now()).toMillis());
-        return resultNode;
+        log.info("status={} query={} response={} timeMillis={}", FINISHED, queryLog, responseLog, Duration.between(start, Instant.now()).toMillis());
+        return response;
     }
 
     public Integer getRowsAffected(final String queryBase64) {
@@ -85,7 +85,7 @@ public class QueryService {
 
         final var result = jdbcTemplate.update(query);
 
-        log.info("status={} query={} result={} timeMillis={}", FINISHED, queryLog, result, Duration.between(start, Instant.now()).toMillis());
+        log.info("status={} query={} response={} timeMillis={}", FINISHED, queryLog, result, Duration.between(start, Instant.now()).toMillis());
         return result;
     }
 
