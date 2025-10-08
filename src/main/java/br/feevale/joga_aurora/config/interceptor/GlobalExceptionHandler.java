@@ -1,4 +1,4 @@
-package br.feevale.joga_aurora.interceptor;
+package br.feevale.joga_aurora.config.interceptor;
 
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;

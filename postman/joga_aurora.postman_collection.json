@@ -1,0 +1,755 @@
+{
+	"info": {
+		"_postman_id": "cb88b105-4ab8-4f1a-9726-b29c09f6ef8f",
+		"name": "joga_aurora",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37211308"
+	},
+	"item": [
+		{
+			"name": "Turma",
+			"item": [
+				{
+					"name": "listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/turma",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"turma"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detalhar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/turma/{{classroom_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"turma",
+								"{{classroom_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "adicionar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"pm.collectionVariables.set(\"classroom_id\", response.id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"21\",\r\n    \"ano\": 2025\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/turma",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"turma"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alterar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"21\",\r\n    \"ano\": \"2025\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/turma/{{classroom_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"turma",
+								"{{classroom_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remover",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/turma/{{classroom_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"turma",
+								"{{classroom_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Estudante",
+			"item": [
+				{
+					"name": "listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/estudante",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"estudante"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detalhar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/estudante/{{student_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"estudante",
+								"{{student_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "adicionar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"pm.collectionVariables.set(\"student_id\", response.id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Ramon Pedro Menz\",\r\n    \"data_nascimento\": \"2005-07-09\",\r\n    \"genero\": \"M\",\r\n    \"turma\": {\r\n        \"id\": \"{{classroom_id}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/estudante",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"estudante"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alterar",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Ramon Menz\",\r\n    \"data_nascimento\": \"2009-09-09\",\r\n    \"genero\": \"M\",\r\n    \"turma\": {\r\n        \"id\": \"{{classroom_id}}\"\r\n    }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/estudante/{{student_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"estudante",
+								"{{student_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remover",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/estudante/{{student_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"estudante",
+								"{{student_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Medida Corporal",
+			"item": [
+				{
+					"name": "listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/medida-corporal",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"medida-corporal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detalhar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/medida-corporal/{{body_measurement_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"medida-corporal",
+								"{{body_measurement_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "adicionar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"pm.collectionVariables.set(\"body_measurement_id\", response.id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"data_coleta\": \"2025-10-10\",\r\n    \"cintura\": 60,\r\n    \"peso\": 50.0,\r\n    \"estatura\": 164,\r\n    \"estudante\": {\r\n        \"id\": \"{{student_id}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/medida-corporal",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"medida-corporal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alterar",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"data_coleta\": \"2025-10-10\",\r\n    \"cintura\": 60,\r\n    \"peso\": 50.0,\r\n    \"estatura\": 164,\r\n    \"estudante\": {\r\n        \"id\": \"{{student_id}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/medida-corporal/{{body_measurement_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"medida-corporal",
+								"{{body_measurement_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remover",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/medida-corporal/{{body_measurement_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"medida-corporal",
+								"{{body_measurement_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Teste Físico",
+			"item": [
+				{
+					"name": "listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/teste-fisico",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"teste-fisico"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detalhar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/teste-fisico/{{physical_test_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"teste-fisico",
+								"{{physical_test_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "adicionar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"pm.collectionVariables.set(\"physical_test_id\", response.id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"data_coleta\": \"2025-10-10\",\r\n    \"teste_seis_minutos\": 1,\r\n    \"teste_flex\": 1,\r\n    \"teste_rml\": 1,\r\n    \"teste_vinte_metros\": 1,\r\n    \"teste_arremesso_dois_quilos\": 1,\r\n    \"estudante\": {\r\n        \"id\": \"{{student_id}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/teste-fisico",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"teste-fisico"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alterar",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"data_coleta\": \"2025-10-10\",\r\n    \"teste_seis_minutos\": 100,\r\n    \"teste_flex\": 100,\r\n    \"teste_rml\": 100,\r\n    \"teste_vinte_metros\": 100,\r\n    \"teste_arremesso_dois_quilos\": 100,\r\n    \"estudante\": {\r\n        \"id\": \"{{student_id}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/teste-fisico/{{physical_test_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"teste-fisico",
+								"{{physical_test_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remover",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/teste-fisico/{{physical_test_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"teste-fisico",
+								"{{physical_test_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Query",
+			"item": [
+				{
+					"name": "select",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const encodedBody = btoa(pm.request.body.raw);\r",
+									"pm.request.body.update(encodedBody);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "SELECT * FROM permission;",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/query",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "insert / update / delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const encodedBody = btoa(pm.request.body.raw);\r",
+									"pm.request.body.update(encodedBody);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "-- teste --\r\n-- INSERT INTO permission(id, name, client_id)\r\n-- VALUES\r\n--     (0, 'TEST', 'client00-0000-0000-0000-admin0000001');\r\n\r\n--DELETE FROM permission WHERE name NOT IN ('ADMIN', 'USER');\r\nDELETE FROM student;",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/query",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"query"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/logout",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "username",
+			"value": "Admin"
+		},
+		{
+			"key": "password",
+			"value": "123456"
+		},
+		{
+			"key": "classroom_id",
+			"value": ""
+		},
+		{
+			"key": "student_id",
+			"value": ""
+		},
+		{
+			"key": "body_measurement_id",
+			"value": ""
+		},
+		{
+			"key": "physical_test_id",
+			"value": ""
+		}
+	]
+}
