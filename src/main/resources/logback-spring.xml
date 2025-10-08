@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+
+    <springProperty scope="context" name="applicationTitle" source="spring.application.name"/>
+
+    <conversionRule conversionWord="spanId" converterClass="br.feevale.joga_aurora.logging.SpanConverter" />
+    <conversionRule conversionWord="traceId" converterClass="br.feevale.joga_aurora.logging.TraceConverter" />
+
+    <springProfile name="default">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%clr(%date{yyyy-MM-dd HH:mm:ss.SSS, America/Sao_Paulo}) %clr(%highlight(%-5level) %boldMagenta(%-22.22thread) [ %boldYellow(%-32.32traceId) | %yellow(%-16.16spanId) ]) %clr(%boldGreen(%-40.40logger{40})) %clr(:) %clr(m=%M) %m%n</pattern>
+            </encoder>
+        </appender>
+    </springProfile>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </root>
+</configuration>
