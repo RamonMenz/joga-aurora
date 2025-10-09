@@ -25,9 +25,6 @@ public class ClassroomEntity {
     @Column(name = "name", nullable = false, columnDefinition = "varchar(32)")
     private String name;
 
-    @Column(name = "year", nullable = false, columnDefinition = "integer")
-    private Integer year;
-
     @OneToMany(mappedBy = "classroom")
     private List<StudentEntity> studentList;
 

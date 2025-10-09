@@ -36,7 +36,6 @@ public final class ClassroomMapper {
         return new Classroom(
                 source.getId(),
                 source.getName(),
-                source.getYear(),
                 attendanceDone,
                 students);
     }

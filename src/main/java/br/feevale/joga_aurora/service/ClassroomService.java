@@ -109,7 +109,6 @@ public class ClassroomService {
 
     private ClassroomEntity saveClassroomEntity(final ClassroomEntity entity, final Classroom request) {
         entity.setName(request.name());
-        entity.setYear(request.year());
 
         return repository.save(entity);
     }

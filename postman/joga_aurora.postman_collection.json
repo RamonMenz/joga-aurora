@@ -65,7 +65,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"21\",\r\n    \"ano\": 2025\r\n}",
+							"raw": "{\r\n    \"nome\": \"21\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -91,7 +91,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"21\",\r\n    \"ano\": \"2025\"\r\n}",
+							"raw": "{\r\n    \"nome\": \"21\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -725,15 +725,15 @@
 	"variable": [
 		{
 			"key": "host",
-			"value": "http://localhost:8080"
+			"value": ""
 		},
 		{
 			"key": "username",
-			"value": "Admin"
+			"value": ""
 		},
 		{
 			"key": "password",
-			"value": "123456"
+			"value": ""
 		},
 		{
 			"key": "classroom_id",
