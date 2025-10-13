@@ -25,7 +25,7 @@ public final class ClassroomMapper {
                 Objects.isNull(source.getStudentList())
                         ? Collections.emptyList()
                         : source.getStudentList().stream()
-                        .map(StudentMapper::toBasicResponse)
+                        .map(StudentMapper::toBasicResponseWithoutClassroom)
                         .toList());
     }
 

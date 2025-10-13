@@ -13,6 +13,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.sql.Date;
+
 @Getter
 @Setter
 @Entity
@@ -28,9 +30,8 @@ public class AttendanceEntity {
     @JoinColumn(name = "student_id", nullable = false, columnDefinition = "varchar(36)")
     private StudentEntity student;
 
-    @ManyToOne
-    @JoinColumn(name = "lesson_id", nullable = false, columnDefinition = "varchar(36)")
-    private LessonEntity lesson;
+    @Column(name = "attendance_date", nullable = false, columnDefinition = "date")
+    private Date attendanceDate;
 
     @Convert(converter = AttendanceStatusEnumConverter.class)
     @Column(name = "status", nullable = false, columnDefinition = "char(1)")

@@ -19,4 +19,5 @@ public record Classroom(
         @JsonProperty("estudantes")
         List<Student> students
 
-) {}
+) {
+}

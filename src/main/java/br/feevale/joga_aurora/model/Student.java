@@ -30,4 +30,5 @@ public record Student(
         @JsonProperty("turma")
         Classroom classroom
 
-) {}
+) {
+}

@@ -20,12 +20,13 @@ public class GlobalExceptionHandler {
 
     private static final String VALIDATION_ERROR_MESSAGE = "Erro de validação";
 
-    public record ErrorResponse (
-        LocalDateTime timestamp,
-        int status,
-        String error,
-        String message
-    ) {}
+    public record ErrorResponse(
+            LocalDateTime timestamp,
+            int status,
+            String error,
+            String message
+    ) {
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(final Exception ex) {
@@ -94,12 +95,10 @@ public class GlobalExceptionHandler {
 
     private static String extractError(final MethodArgumentNotValidException ex) {
         final var error = ex.getBindingResult().getAllErrors().stream().findFirst();
-
         if (error.isEmpty())
             return VALIDATION_ERROR_MESSAGE;
 
         final var fieldError = (FieldError) error.get();
-
         return fieldError.getField() + ": " + fieldError.getDefaultMessage();
     }
 

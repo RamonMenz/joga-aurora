@@ -12,7 +12,6 @@ public enum GenderEnum {
     NOT_INFORMED("N", "Não informado"),
     MALE("M", "Masculino"),
     FEMALE("F", "Feminino"),
-    OTHER("O", "Outro"),
     ;
 
     private final String code;
@@ -20,7 +19,7 @@ public enum GenderEnum {
 
     @JsonCreator
     public static GenderEnum fromCode(final String code) {
-        for (GenderEnum g : values()) {
+        for (final var g : values()) {
             if (g.code.equals(code.toUpperCase())) {
                 return g;
             }

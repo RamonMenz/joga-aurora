@@ -4,18 +4,21 @@ import br.feevale.joga_aurora.enums.AttendanceStatusEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.sql.Date;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record Attendance (
+public record Attendance(
 
-    String id,
+        String id,
 
-    @JsonProperty("estudante")
-    Student student,
+        @JsonProperty("estudante")
+        Student student,
 
-    @JsonProperty("aula")
-    Lesson lesson,
+        @JsonProperty("data_presenca")
+        Date attendanceDate,
 
-    @JsonProperty("status")
-    AttendanceStatusEnum status
+        @JsonProperty("status")
+        AttendanceStatusEnum status
 
-) {}
+) {
+}

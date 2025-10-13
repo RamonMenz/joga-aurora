@@ -1,6 +1,8 @@
 package br.feevale.joga_aurora.controller;
 
 import br.feevale.joga_aurora.model.Classroom;
+import br.feevale.joga_aurora.model.ClassroomAttendance;
+import br.feevale.joga_aurora.service.ClassroomAttendanceService;
 import br.feevale.joga_aurora.service.ClassroomService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -13,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Date;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -23,6 +27,7 @@ import java.util.Objects;
 public class ClassroomController {
 
     private final ClassroomService service;
+    private final ClassroomAttendanceService classroomAttendanceService;
 
     @GetMapping
     public ResponseEntity<?> getAll(final Pageable pageable) {
@@ -67,6 +72,36 @@ public class ClassroomController {
 
         if (deleted)
             return ResponseEntity.noContent().build();
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}/presenca")
+    public ResponseEntity<?> getAllAttendances(@PathVariable final String id, @RequestParam(required = false) final Date attendanceDate) {
+        final var classroomAttendanceList = classroomAttendanceService.getAll(id, attendanceDate);
+
+        if (Objects.nonNull(classroomAttendanceList))
+            return ResponseEntity.ok(classroomAttendanceList);
+
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/{id}/presenca")
+    public ResponseEntity<?> insertAttendances(@PathVariable final String id, @RequestBody final ClassroomAttendance request) {
+        final var classroomAttendanceList = classroomAttendanceService.insert(id, request);
+
+        if (Objects.nonNull(classroomAttendanceList))
+            return ResponseEntity.status(HttpStatus.CREATED).body(classroomAttendanceList);
+
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PutMapping("/{id}/presenca")
+    public ResponseEntity<?> updateAttendances(@PathVariable final String id, @RequestBody final ClassroomAttendance request) {
+        final var classroomAttendanceList = classroomAttendanceService.update(id, request);
+
+        if (Objects.nonNull(classroomAttendanceList))
+            return ResponseEntity.ok(classroomAttendanceList);
 
         return ResponseEntity.notFound().build();
     }

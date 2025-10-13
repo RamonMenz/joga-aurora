@@ -60,9 +60,7 @@ public class StudentService {
         final var start = Instant.now();
         log.info("status={} request={}", STARTED, JsonUtil.objectToJson(request));
 
-        final var entity = new StudentEntity();
-
-        final var result = saveStudentEntity(entity, request);
+        final var result = saveStudentEntity(new StudentEntity(), request);
 
         final var response = StudentMapper.toCompleteResponse(result);
 

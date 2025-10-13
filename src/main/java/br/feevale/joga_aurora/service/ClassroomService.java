@@ -4,8 +4,8 @@ import br.feevale.joga_aurora.entity.ClassroomEntity;
 import br.feevale.joga_aurora.enums.DeletedEnum;
 import br.feevale.joga_aurora.mapper.ClassroomMapper;
 import br.feevale.joga_aurora.model.Classroom;
+import br.feevale.joga_aurora.repository.AttendanceRepository;
 import br.feevale.joga_aurora.repository.ClassroomRepository;
-import br.feevale.joga_aurora.repository.LessonRepository;
 import br.feevale.joga_aurora.util.JsonUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ import static br.feevale.joga_aurora.enums.LogStatusEnum.STARTED;
 public class ClassroomService {
 
     private final ClassroomRepository repository;
-    private final LessonRepository lessonRepository;
+    private final AttendanceRepository attendanceRepository;
 
     @Transactional(readOnly = true)
     public Page<Classroom> getAll(final Pageable pageable) {
@@ -51,7 +51,8 @@ public class ClassroomService {
 
         final var result = repository.findById(id).orElse(null);
 
-        boolean attendanceDone = lessonRepository.existsByClassroom_IdAndLessonDate(Objects.requireNonNull(result).getId(), Date.valueOf(LocalDate.now()));
+        boolean attendanceDone = attendanceRepository
+                .existsByStudent_Classroom_IdAndAttendanceDate(Objects.requireNonNull(result).getId(), Date.valueOf(LocalDate.now()));
 
         final var response = ClassroomMapper.toCompleteResponse(result, attendanceDone);
 
@@ -64,9 +65,7 @@ public class ClassroomService {
         final var start = Instant.now();
         log.info("status={} request={}", STARTED, JsonUtil.objectToJson(request));
 
-        final var entity = new ClassroomEntity();
-
-        final var result = saveClassroomEntity(entity, request);
+        final var result = saveClassroomEntity(new ClassroomEntity(), request);
 
         final var response = ClassroomMapper.toCompleteResponse(result, false);
 
@@ -82,7 +81,8 @@ public class ClassroomService {
         final var result = repository.findById(id)
                 .map(it -> saveClassroomEntity(it, request)).orElse(null);
 
-        boolean attendanceDone = lessonRepository.existsByClassroom_IdAndLessonDate(Objects.requireNonNull(result).getId(), Date.valueOf(LocalDate.now()));
+        boolean attendanceDone = attendanceRepository
+                .existsByStudent_Classroom_IdAndAttendanceDate(Objects.requireNonNull(result).getId(), Date.valueOf(LocalDate.now()));
 
         final var response = ClassroomMapper.toCompleteResponse(result, attendanceDone);
 

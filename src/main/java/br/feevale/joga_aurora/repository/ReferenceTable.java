@@ -62,14 +62,14 @@ public class ReferenceTable {
     }
 
     private String key(final Integer age, final GenderEnum gender) {
-        return age + "_" + gender.name();
+        return age + "_" + gender.getCode();
     }
 
     private Reference getReference(final Integer age, final GenderEnum gender) {
         return references.get(key(age, gender));
     }
 
-    public Reference getReference(StudentEntity student) {
+    public Reference getReference(final StudentEntity student) {
         final var age = DateUtil.getAgeByBirthDate(student.getBirthDate());
         return getReference(age, student.getGender());
     }

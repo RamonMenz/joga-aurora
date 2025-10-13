@@ -38,4 +38,5 @@ public record BodyMeasurement(
         @JsonProperty("referencia_relacao_cintura_estatura")
         RiskReferenceEnum waistHeightRatioReference
 
-) {}
+) {
+}

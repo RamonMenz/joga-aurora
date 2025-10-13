@@ -47,4 +47,5 @@ public record PhysicalTest(
         @JsonProperty("referencia_arremesso_dois_quilos")
         RiskReferenceEnum throwTwoKgReference
 
-) {}
+) {
+}

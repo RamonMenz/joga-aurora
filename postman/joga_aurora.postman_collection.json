@@ -91,7 +91,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\": \"21\"\r\n}",
+							"raw": "{\r\n    \"nome\": \"22\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -516,6 +516,135 @@
 			]
 		},
 		{
+			"name": "Presença",
+			"item": [
+				{
+					"name": "listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/presenca",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"presenca"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detalhar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/presenca/{{attendance_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"presenca",
+								"{{attendance_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "adicionar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"pm.collectionVariables.set(\"attendance_id\", response.id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"estudante\": {\r\n        \"id\": \"{{student_id}}\"\r\n    },\r\n    \"data_presenca\": null,\r\n    \"status\": \"P\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/presenca",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"presenca"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alterar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"estudante\": {\r\n        \"id\": \"{{student_id}}\"\r\n    },\r\n    \"data_presenca\": \"2025-10-10\",\r\n    \"status\": \"A\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/presenca/{{attendance_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"presenca",
+								"{{attendance_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remover",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/presenca/{{attendance_id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"presenca",
+								"{{attendance_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Presença da Turma",
+			"item": []
+		},
+		{
 			"name": "Query",
 			"item": [
 				{
@@ -749,6 +878,10 @@
 		},
 		{
 			"key": "physical_test_id",
+			"value": ""
+		},
+		{
+			"key": "attendance_id",
 			"value": ""
 		}
 	]

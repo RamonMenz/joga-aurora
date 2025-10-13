@@ -1,15 +1,14 @@
 package br.feevale.joga_aurora.service;
 
 import br.feevale.joga_aurora.entity.BodyMeasurementEntity;
-import br.feevale.joga_aurora.entity.StudentEntity;
 import br.feevale.joga_aurora.enums.DeletedEnum;
-import br.feevale.joga_aurora.enums.RiskReferenceEnum;
 import br.feevale.joga_aurora.mapper.BodyMeasurementMapper;
 import br.feevale.joga_aurora.model.BodyMeasurement;
 import br.feevale.joga_aurora.repository.BodyMeasurementRepository;
-import br.feevale.joga_aurora.repository.ReferenceTable;
 import br.feevale.joga_aurora.repository.StudentRepository;
+import br.feevale.joga_aurora.util.DateUtil;
 import br.feevale.joga_aurora.util.JsonUtil;
+import br.feevale.joga_aurora.util.ReferenceUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,23 +18,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.Date;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.Objects;
 
 import static br.feevale.joga_aurora.enums.LogStatusEnum.FINISHED;
 import static br.feevale.joga_aurora.enums.LogStatusEnum.STARTED;
-import static br.feevale.joga_aurora.enums.RiskReferenceEnum.NO_RISK;
-import static br.feevale.joga_aurora.enums.RiskReferenceEnum.RISK;
+import static br.feevale.joga_aurora.enums.ReferenceEnum.BMI;
+import static br.feevale.joga_aurora.enums.ReferenceEnum.WAIST_HEIGHT_RATIO;
 
 @Slf4j
 @AllArgsConstructor
 @Service
 public class BodyMeasurementService {
 
-    private static final ReferenceTable REFERENCE_TABLE = new ReferenceTable();
     private final BodyMeasurementRepository repository;
     private final StudentRepository studentRepository;
 
@@ -70,9 +66,7 @@ public class BodyMeasurementService {
         final var start = Instant.now();
         log.info("status={} request={}", STARTED, JsonUtil.objectToJson(request));
 
-        final var entity = new BodyMeasurementEntity();
-
-        final var result = saveBodyMeasurementEntity(entity, request);
+        final var result = saveBodyMeasurementEntity(new BodyMeasurementEntity(), request);
 
         final var response = BodyMeasurementMapper.toCompleteResponse(result);
 
@@ -115,18 +109,18 @@ public class BodyMeasurementService {
         if (Objects.nonNull(request.student()))
             studentRepository.findById(request.student().id()).ifPresent(entity::setStudent);
 
-        entity.setCollectionDate(Objects.nonNull(request.collectionDate()) ? request.collectionDate() : Date.valueOf(LocalDate.now()));
+        entity.setCollectionDate(DateUtil.thisDateOrToday(request.collectionDate()));
         entity.setWaist(request.waist());
         entity.setWeight(request.weight());
         entity.setHeight(request.height());
 
         final var bmi = calculateBmi(request.weight(), request.height());
         entity.setBmi(bmi);
-        entity.setBmiReference(calculateBmiReference(bmi, entity.getStudent()));
+        entity.setBmiReference(ReferenceUtil.getReference(BMI, bmi, entity.getStudent()));
 
         final var waistHeightRatio = calculateWaistHeightRatio(request.waist(), request.height());
         entity.setWaistHeightRatio(waistHeightRatio);
-        entity.setWaistHeightRatioReference(calculateWaistHeightRatioReference(waistHeightRatio, entity.getStudent()));
+        entity.setWaistHeightRatioReference(ReferenceUtil.getReference(WAIST_HEIGHT_RATIO, waistHeightRatio, entity.getStudent()));
 
         return repository.save(entity);
     }
@@ -135,16 +129,8 @@ public class BodyMeasurementService {
         return BigDecimal.valueOf(weight / Math.pow((double) height / 100.0, 2)).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
-    private RiskReferenceEnum calculateBmiReference(final Double bmi, final StudentEntity student) {
-        return bmi > REFERENCE_TABLE.getReference(student).bmi() ? RISK : NO_RISK;
-    }
-
     private Double calculateWaistHeightRatio(final Integer waist, final Integer height) {
         return BigDecimal.valueOf((double) waist / height).setScale(2, RoundingMode.HALF_UP).doubleValue();
-    }
-
-    private RiskReferenceEnum calculateWaistHeightRatioReference(final Double waistHeightRatio, final StudentEntity student) {
-        return waistHeightRatio > REFERENCE_TABLE.getReference(student).waistHeightRatio() ? RISK : NO_RISK;
     }
 
 }
