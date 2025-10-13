@@ -4,9 +4,12 @@ import br.feevale.joga_aurora.model.Classroom;
 import br.feevale.joga_aurora.model.ClassroomAttendance;
 import br.feevale.joga_aurora.service.ClassroomAttendanceService;
 import br.feevale.joga_aurora.service.ClassroomService;
+import br.feevale.joga_aurora.service.ClassroomAttendanceReportService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +31,7 @@ public class ClassroomController {
 
     private final ClassroomService service;
     private final ClassroomAttendanceService classroomAttendanceService;
+    private final ClassroomAttendanceReportService classroomAttendanceReportService;
 
     @GetMapping
     public ResponseEntity<?> getAll(final Pageable pageable) {
@@ -104,6 +108,19 @@ public class ClassroomController {
             return ResponseEntity.ok(classroomAttendanceList);
 
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}/presenca/relatorio")
+    public ResponseEntity<?> getAttendancesReport(@PathVariable final String id, @RequestParam final Date startDate, @RequestParam final Date endDate) {
+        final var report = classroomAttendanceReportService.getAttendancesReport(id, startDate, endDate);
+
+        if (Objects.nonNull(report))
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=attendance_report.xlsx")
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(report);
+
+        return ResponseEntity.badRequest().build();
     }
 
 }
