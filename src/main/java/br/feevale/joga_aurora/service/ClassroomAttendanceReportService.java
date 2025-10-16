@@ -51,28 +51,27 @@ public class ClassroomAttendanceReportService {
                 .distinct()
                 .toList();
 
-        Map<String, Map<Date, AttendanceStatusEnum>> attendanceMap = new HashMap<>();
-        for (final var attendance : attendances) {
-            attendanceMap
-                    .computeIfAbsent(attendance.getStudent().getId(), k -> new HashMap<>())
-                    .put(attendance.getAttendanceDate(), attendance.getStatus());
-        }
+        final Map<String, Map<Date, AttendanceStatusEnum>> attendanceMap = new HashMap<>();
+        attendances.forEach(attendance ->
+                attendanceMap
+                        .computeIfAbsent(attendance.getStudent().getId(), k -> new HashMap<>())
+                        .put(attendance.getAttendanceDate(), attendance.getStatus()));
 
         // Criar planilha
         try (final var workbook = new XSSFWorkbook()) {
-            Sheet sheet = workbook.createSheet("Attendance");
+            final Sheet sheet = workbook.createSheet("Attendance");
 
             // Estilo para cabeçalhos
-            CellStyle headerStyle = workbook.createCellStyle();
-            Font headerFont = workbook.createFont();
+            final CellStyle headerStyle = workbook.createCellStyle();
+            final Font headerFont = workbook.createFont();
             headerFont.setBold(true);
             headerStyle.setFont(headerFont);
 
             // Cabeçalho
-            Row headerRow = sheet.createRow(0);
+            final Row headerRow = sheet.createRow(0);
             headerRow.createCell(0).setCellValue("Estudantes");
             for (int i = 0; i < dates.size(); i++) {
-                Cell cell = headerRow.createCell(i + 1);
+                final Cell cell = headerRow.createCell(i + 1);
                 cell.setCellValue(new SimpleDateFormat("dd/MM/yyyy").format(dates.get(i)));
                 cell.setCellStyle(headerStyle);
             }
@@ -80,16 +79,16 @@ public class ClassroomAttendanceReportService {
             // Linhas dos alunos
             int rowIdx = 1;
             for (final var student : students) {
-                Row row = sheet.createRow(rowIdx++);
+                final Row row = sheet.createRow(rowIdx++);
                 row.createCell(0).setCellValue(student.getName());
 
-                Map<Date, AttendanceStatusEnum> studentRecords = attendanceMap.getOrDefault(student.getId(), Collections.emptyMap());
+                final Map<Date, AttendanceStatusEnum> studentRecords = attendanceMap.getOrDefault(student.getId(), Collections.emptyMap());
 
                 for (int i = 0; i < dates.size(); i++) {
-                    Date date = dates.get(i);
-                    AttendanceStatusEnum status = studentRecords.get(date);
+                    final Date date = dates.get(i);
+                    final AttendanceStatusEnum status = studentRecords.get(date);
 
-                    String display = Objects.nonNull(status) ? status.getDescription() : AttendanceStatusEnum.ABSENT.getDescription();
+                    final String display = Objects.nonNull(status) ? status.getDescription() : AttendanceStatusEnum.ABSENT.getDescription();
 
                     row.createCell(i + 1).setCellValue(display);
                 }
@@ -104,7 +103,7 @@ public class ClassroomAttendanceReportService {
             try (final var out = new ByteArrayOutputStream()) {
                 workbook.write(out);
 
-                log.info("status={} id={} startDate={} endDate={} timeMillis={}", FINISHED, id, startDate, endDate, Duration.between(start, Instant.now()).toMillis());
+                log.info("status={} id={} startDate={} endDate={} datesSize={} timeMillis={}", FINISHED, id, startDate, endDate, dates.size(), Duration.between(start, Instant.now()).toMillis());
                 return out.toByteArray();
             }
         } catch (IOException e) {

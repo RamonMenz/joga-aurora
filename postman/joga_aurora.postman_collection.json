@@ -642,7 +642,126 @@
 		},
 		{
 			"name": "Presença da Turma",
-			"item": []
+			"item": [
+				{
+					"name": "listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/presenca/turma/{{classroom_id}}?attendanceDate=2025-10-10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"presenca",
+								"turma",
+								"{{classroom_id}}"
+							],
+							"query": [
+								{
+									"key": "attendanceDate",
+									"value": "2025-10-10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "adicionar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"pm.collectionVariables.set(\"attendance_id\", response.lista_presenca[0].id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"lista_presenca\": [\r\n        {\r\n            \"estudante\": {\r\n                \"id\": \"{{student_id}}\"\r\n            },\r\n            \"status\": \"P\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/presenca/turma/{{classroom_id}}?attendanceDate=2025-10-10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"presenca",
+								"turma",
+								"{{classroom_id}}"
+							],
+							"query": [
+								{
+									"key": "attendanceDate",
+									"value": "2025-10-10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "alterar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"lista_presenca\": [\r\n        {\r\n            \"id\": \"{{attendance_id}}\",\r\n            \"estudante\": {\r\n                \"id\": \"{{student_id}}\"\r\n            },\r\n            \"status\": \"A\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/presenca/turma/{{classroom_id}}?attendanceDate=2025-10-10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"presenca",
+								"turma",
+								"{{classroom_id}}"
+							],
+							"query": [
+								{
+									"key": "attendanceDate",
+									"value": "2025-10-10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "Query",
@@ -744,6 +863,41 @@
 							],
 							"path": [
 								"query"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Relatórios",
+			"item": [
+				{
+					"name": "registro de presenca",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/turma/{{classroom_id}}/presenca/relatorio?startDate=2025-07-01&endDate=2025-12-31",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"turma",
+								"{{classroom_id}}",
+								"presenca",
+								"relatorio"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2025-07-01"
+								},
+								{
+									"key": "endDate",
+									"value": "2025-12-31"
+								}
 							]
 						}
 					},
