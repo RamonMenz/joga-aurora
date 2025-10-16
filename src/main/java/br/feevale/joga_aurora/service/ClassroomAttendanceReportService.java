@@ -59,7 +59,7 @@ public class ClassroomAttendanceReportService {
 
         // Criar planilha
         try (final var workbook = new XSSFWorkbook()) {
-            final Sheet sheet = workbook.createSheet("Attendance");
+            final Sheet sheet = workbook.createSheet("Relatório de Presença");
 
             // Estilo para cabeçalhos
             final CellStyle headerStyle = workbook.createCellStyle();
@@ -69,7 +69,10 @@ public class ClassroomAttendanceReportService {
 
             // Cabeçalho
             final Row headerRow = sheet.createRow(0);
-            headerRow.createCell(0).setCellValue("Estudantes");
+            final Cell cell0 = headerRow.createCell(0);
+            cell0.setCellValue("Estudantes");
+            cell0.setCellStyle(headerStyle);
+
             for (int i = 0; i < dates.size(); i++) {
                 final Cell cell = headerRow.createCell(i + 1);
                 cell.setCellValue(new SimpleDateFormat("dd/MM/yyyy").format(dates.get(i)));

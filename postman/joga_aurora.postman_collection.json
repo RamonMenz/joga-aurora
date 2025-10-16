@@ -879,7 +879,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/turma/{{classroom_id}}/presenca/relatorio?startDate=2025-07-01&endDate=2025-12-31",
+							"raw": "{{host}}/turma/{{classroom_id}}/presenca/relatorio?dataInicial=2025-01-01&dataFinal=2025-12-31",
 							"host": [
 								"{{host}}"
 							],
@@ -891,11 +891,11 @@
 							],
 							"query": [
 								{
-									"key": "startDate",
-									"value": "2025-07-01"
+									"key": "dataInicial",
+									"value": "2025-01-01"
 								},
 								{
-									"key": "endDate",
+									"key": "dataFinal",
 									"value": "2025-12-31"
 								}
 							]

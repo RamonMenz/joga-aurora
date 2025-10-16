@@ -79,8 +79,8 @@ public class ClassroomController {
 
     @GetMapping("/{id}/presenca/relatorio")
     public ResponseEntity<?> getAttendancesReport(@PathVariable final String id,
-                                                  @RequestParam final Date startDate,
-                                                  @RequestParam final Date endDate) {
+                                                  @RequestParam(name = "dataInicial") final Date startDate,
+                                                  @RequestParam(name = "dataFinal") final Date endDate) {
         final var report = classroomAttendanceReportService.getAttendancesReport(id, startDate, endDate);
 
         if (Objects.nonNull(report))
