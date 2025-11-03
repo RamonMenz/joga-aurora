@@ -2,6 +2,7 @@ package br.feevale.joga_aurora.service;
 
 import br.feevale.joga_aurora.entity.PhysicalTestEntity;
 import br.feevale.joga_aurora.enums.DeletedEnum;
+import br.feevale.joga_aurora.enums.NotFoundEnum;
 import br.feevale.joga_aurora.mapper.PhysicalTestMapper;
 import br.feevale.joga_aurora.model.PhysicalTest;
 import br.feevale.joga_aurora.repository.PhysicalTestRepository;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -27,6 +29,7 @@ import static br.feevale.joga_aurora.enums.ReferenceEnum.RML;
 import static br.feevale.joga_aurora.enums.ReferenceEnum.SIX_MINUTES;
 import static br.feevale.joga_aurora.enums.ReferenceEnum.THROW_TWO_KG;
 import static br.feevale.joga_aurora.enums.ReferenceEnum.TWENTY_METERS;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
 @AllArgsConstructor
@@ -54,7 +57,8 @@ public class PhysicalTestService {
         final var start = Instant.now();
         log.info("status={} id={}", STARTED, id);
 
-        final var result = repository.findById(id).orElse(null);
+        final var result = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, NotFoundEnum.PHYSICAL_TEST.getMessage()));
 
         final var response = PhysicalTestMapper.toCompleteResponse(result);
 
@@ -81,7 +85,8 @@ public class PhysicalTestService {
         log.info("status={} id={} request={}", STARTED, id, JsonUtil.objectToJson(request));
 
         final var result = repository.findById(id)
-                .map(it -> savePhysicalTestEntity(it, request)).orElse(null);
+                .map(it -> savePhysicalTestEntity(it, request))
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, NotFoundEnum.PHYSICAL_TEST.getMessage()));
 
         final var response = PhysicalTestMapper.toCompleteResponse(result);
 
@@ -108,7 +113,11 @@ public class PhysicalTestService {
 
     private PhysicalTestEntity savePhysicalTestEntity(final PhysicalTestEntity entity, final PhysicalTest request) {
         if (Objects.nonNull(request.student()))
-            studentRepository.findById(request.student().id()).ifPresent(entity::setStudent);
+            studentRepository.findById(request.student().id()).ifPresentOrElse(
+                    entity::setStudent,
+                    () -> {
+                        throw new ResponseStatusException(NOT_FOUND, NotFoundEnum.STUDENT.getMessage());
+                    });
 
         entity.setCollectionDate(DateUtil.thisDateOrToday(request.collectionDate()));
 

@@ -2,6 +2,7 @@ package br.feevale.joga_aurora.service;
 
 import br.feevale.joga_aurora.entity.StudentEntity;
 import br.feevale.joga_aurora.enums.DeletedEnum;
+import br.feevale.joga_aurora.enums.NotFoundEnum;
 import br.feevale.joga_aurora.mapper.StudentMapper;
 import br.feevale.joga_aurora.model.Student;
 import br.feevale.joga_aurora.repository.ClassroomRepository;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -20,6 +22,7 @@ import java.util.Objects;
 
 import static br.feevale.joga_aurora.enums.LogStatusEnum.FINISHED;
 import static br.feevale.joga_aurora.enums.LogStatusEnum.STARTED;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
 @AllArgsConstructor
@@ -47,7 +50,8 @@ public class StudentService {
         final var start = Instant.now();
         log.info("status={} id={}", STARTED, id);
 
-        final var result = repository.findById(id).orElse(null);
+        final var result = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, NotFoundEnum.STUDENT.getMessage()));
 
         final var response = StudentMapper.toCompleteResponse(result);
 
@@ -74,7 +78,8 @@ public class StudentService {
         log.info("status={} id={} request={}", STARTED, id, JsonUtil.objectToJson(request));
 
         final var result = repository.findById(id)
-                .map(it -> saveStudentEntity(it, request)).orElse(null);
+                .map(it -> saveStudentEntity(it, request))
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, NotFoundEnum.STUDENT.getMessage()));
 
         final var response = StudentMapper.toCompleteResponse(result);
 
@@ -101,7 +106,11 @@ public class StudentService {
 
     private StudentEntity saveStudentEntity(final StudentEntity entity, final Student request) {
         if (Objects.nonNull(request.classroom()))
-            classroomRepository.findById(request.classroom().id()).ifPresent(entity::setClassroom);
+            classroomRepository.findById(request.classroom().id()).ifPresentOrElse(
+                    entity::setClassroom,
+                    () -> {
+                        throw new ResponseStatusException(NOT_FOUND, NotFoundEnum.CLASSROOM.getMessage());
+                    });
 
         entity.setName(request.name());
         entity.setBirthDate(request.birthDate());

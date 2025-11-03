@@ -649,7 +649,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/presenca/turma/{{classroom_id}}?attendanceDate=2025-10-10",
+							"raw": "{{host}}/presenca/turma/{{classroom_id}}?data_presenca=2025-10-10",
 							"host": [
 								"{{host}}"
 							],
@@ -660,7 +660,7 @@
 							],
 							"query": [
 								{
-									"key": "attendanceDate",
+									"key": "data_presenca",
 									"value": "2025-10-10"
 								}
 							]
@@ -700,7 +700,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"lista_presenca\": [\r\n        {\r\n            \"estudante\": {\r\n                \"id\": \"{{student_id}}\"\r\n            },\r\n            \"status\": \"P\"\r\n        }\r\n    ]\r\n}",
+							"raw": "[\r\n    {\r\n        \"estudante\": {\r\n            \"id\": \"{{student_id}}\"\r\n        },\r\n        \"status\": \"P\"\r\n    }\r\n]",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -708,7 +708,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/presenca/turma/{{classroom_id}}?attendanceDate=2025-10-10",
+							"raw": "{{host}}/presenca/turma/{{classroom_id}}?data_presenca=2025-10-10",
 							"host": [
 								"{{host}}"
 							],
@@ -719,7 +719,7 @@
 							],
 							"query": [
 								{
-									"key": "attendanceDate",
+									"key": "data_presenca",
 									"value": "2025-10-10"
 								}
 							]
@@ -734,7 +734,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"lista_presenca\": [\r\n        {\r\n            \"id\": \"{{attendance_id}}\",\r\n            \"estudante\": {\r\n                \"id\": \"{{student_id}}\"\r\n            },\r\n            \"status\": \"A\"\r\n        }\r\n    ]\r\n}",
+							"raw": "[\r\n    {\r\n        \"id\": \"{{attendance_id}}\",\r\n        \"estudante\": {\r\n            \"id\": \"{{student_id}}\"\r\n        },\r\n        \"status\": \"A\"\r\n    }\r\n]",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -742,7 +742,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/presenca/turma/{{classroom_id}}?attendanceDate=2025-10-10",
+							"raw": "{{host}}/presenca/turma/{{classroom_id}}?data_presenca=2025-10-10",
 							"host": [
 								"{{host}}"
 							],
@@ -753,7 +753,7 @@
 							],
 							"query": [
 								{
-									"key": "attendanceDate",
+									"key": "data_presenca",
 									"value": "2025-10-10"
 								}
 							]

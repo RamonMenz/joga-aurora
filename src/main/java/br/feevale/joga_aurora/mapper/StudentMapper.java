@@ -52,11 +52,11 @@ public final class StudentMapper {
                 Objects.isNull(source.getBodyMeasurementList())
                         ? Collections.emptyList()
                         : source.getBodyMeasurementList().stream()
-                        .map(BodyMeasurementMapper::toBasicResponse).toList(),
+                        .map(BodyMeasurementMapper::toResponseWithoutStudent).toList(),
                 Objects.isNull(source.getPhysicalTestList())
                         ? Collections.emptyList()
                         : source.getPhysicalTestList().stream()
-                        .map(PhysicalTestMapper::toBasicResponse).toList(),
+                        .map(PhysicalTestMapper::toResponseWithoutStudent).toList(),
                 ClassroomMapper.toBasicResponse(source.getClassroom()));
     }
 

@@ -11,23 +11,6 @@ public final class BodyMeasurementMapper {
         throw new IllegalStateException("Utility class.");
     }
 
-    public static BodyMeasurement toBasicResponse(final BodyMeasurementEntity source) {
-        if (Objects.isNull(source))
-            return null;
-
-        return new BodyMeasurement(
-                source.getId(),
-                StudentMapper.toBasicResponse(source.getStudent()),
-                source.getCollectionDate(),
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null);
-    }
-
     public static BodyMeasurement toCompleteResponse(final BodyMeasurementEntity source) {
         if (Objects.isNull(source))
             return null;
@@ -35,6 +18,23 @@ public final class BodyMeasurementMapper {
         return new BodyMeasurement(
                 source.getId(),
                 StudentMapper.toBasicResponse(source.getStudent()),
+                source.getCollectionDate(),
+                source.getWaist(),
+                source.getWeight(),
+                source.getHeight(),
+                source.getBmi(),
+                source.getBmiReference(),
+                source.getWaistHeightRatio(),
+                source.getWaistHeightRatioReference());
+    }
+
+    public static BodyMeasurement toResponseWithoutStudent(final BodyMeasurementEntity source) {
+        if (Objects.isNull(source))
+            return null;
+
+        return new BodyMeasurement(
+                source.getId(),
+                null,
                 source.getCollectionDate(),
                 source.getWaist(),
                 source.getWeight(),

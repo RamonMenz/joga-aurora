@@ -2,6 +2,7 @@ package br.feevale.joga_aurora.service;
 
 import br.feevale.joga_aurora.entity.ClassroomEntity;
 import br.feevale.joga_aurora.enums.DeletedEnum;
+import br.feevale.joga_aurora.enums.NotFoundEnum;
 import br.feevale.joga_aurora.mapper.ClassroomMapper;
 import br.feevale.joga_aurora.model.Classroom;
 import br.feevale.joga_aurora.repository.AttendanceRepository;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Date;
 import java.time.Duration;
@@ -22,6 +24,7 @@ import java.util.Objects;
 
 import static br.feevale.joga_aurora.enums.LogStatusEnum.FINISHED;
 import static br.feevale.joga_aurora.enums.LogStatusEnum.STARTED;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
 @AllArgsConstructor
@@ -49,10 +52,12 @@ public class ClassroomService {
         final var start = Instant.now();
         log.info("status={} id={}", STARTED, id);
 
-        final var result = repository.findById(id).orElse(null);
+        final var result = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, NotFoundEnum.CLASSROOM.getMessage()));
 
+        // TODO ver erro de fuso
         boolean attendanceDone = attendanceRepository
-                .existsByStudent_Classroom_IdAndAttendanceDate(Objects.requireNonNull(result).getId(), Date.valueOf(LocalDate.now()));
+                .existsByStudent_Classroom_IdAndAttendanceDate(result.getId(), Date.valueOf(LocalDate.now()));
 
         final var response = ClassroomMapper.toCompleteResponse(result, attendanceDone);
 
@@ -79,7 +84,8 @@ public class ClassroomService {
         log.info("status={} id={} request={}", STARTED, id, JsonUtil.objectToJson(request));
 
         final var result = repository.findById(id)
-                .map(it -> saveClassroomEntity(it, request)).orElse(null);
+                .map(it -> saveClassroomEntity(it, request))
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, NotFoundEnum.CLASSROOM.getMessage()));
 
         boolean attendanceDone = attendanceRepository
                 .existsByStudent_Classroom_IdAndAttendanceDate(Objects.requireNonNull(result).getId(), Date.valueOf(LocalDate.now()));

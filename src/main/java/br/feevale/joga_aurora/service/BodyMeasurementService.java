@@ -2,6 +2,7 @@ package br.feevale.joga_aurora.service;
 
 import br.feevale.joga_aurora.entity.BodyMeasurementEntity;
 import br.feevale.joga_aurora.enums.DeletedEnum;
+import br.feevale.joga_aurora.enums.NotFoundEnum;
 import br.feevale.joga_aurora.mapper.BodyMeasurementMapper;
 import br.feevale.joga_aurora.model.BodyMeasurement;
 import br.feevale.joga_aurora.repository.BodyMeasurementRepository;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -26,6 +28,7 @@ import static br.feevale.joga_aurora.enums.LogStatusEnum.FINISHED;
 import static br.feevale.joga_aurora.enums.LogStatusEnum.STARTED;
 import static br.feevale.joga_aurora.enums.ReferenceEnum.BMI;
 import static br.feevale.joga_aurora.enums.ReferenceEnum.WAIST_HEIGHT_RATIO;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
 @AllArgsConstructor
@@ -53,7 +56,8 @@ public class BodyMeasurementService {
         final var start = Instant.now();
         log.info("status={} id={}", STARTED, id);
 
-        final var result = repository.findById(id).orElse(null);
+        final var result = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, NotFoundEnum.BODY_MEASUREMENT.getMessage()));
 
         final var response = BodyMeasurementMapper.toCompleteResponse(result);
 
@@ -80,7 +84,8 @@ public class BodyMeasurementService {
         log.info("status={} id={} request={}", STARTED, id, JsonUtil.objectToJson(request));
 
         final var result = repository.findById(id)
-                .map(it -> saveBodyMeasurementEntity(it, request)).orElse(null);
+                .map(it -> saveBodyMeasurementEntity(it, request))
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, NotFoundEnum.BODY_MEASUREMENT.getMessage()));
 
         final var response = BodyMeasurementMapper.toCompleteResponse(result);
 
@@ -107,7 +112,11 @@ public class BodyMeasurementService {
 
     private BodyMeasurementEntity saveBodyMeasurementEntity(final BodyMeasurementEntity entity, final BodyMeasurement request) {
         if (Objects.nonNull(request.student()))
-            studentRepository.findById(request.student().id()).ifPresent(entity::setStudent);
+            studentRepository.findById(request.student().id()).ifPresentOrElse(
+                    entity::setStudent,
+                    () -> {
+                        throw new ResponseStatusException(NOT_FOUND, NotFoundEnum.STUDENT.getMessage());
+                    });
 
         entity.setCollectionDate(DateUtil.thisDateOrToday(request.collectionDate()));
         entity.setWaist(request.waist());

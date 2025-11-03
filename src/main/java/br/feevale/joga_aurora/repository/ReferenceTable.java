@@ -4,6 +4,8 @@ import br.feevale.joga_aurora.entity.StudentEntity;
 import br.feevale.joga_aurora.enums.GenderEnum;
 import br.feevale.joga_aurora.model.Reference;
 import br.feevale.joga_aurora.util.DateUtil;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -71,6 +73,12 @@ public class ReferenceTable {
 
     public Reference getReference(final StudentEntity student) {
         final var age = DateUtil.getAgeByBirthDate(student.getBirthDate());
+
+        if (age < 6 || age > 17 || student.getGender().equals(GenderEnum.NOT_INFORMED))
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY,
+                    "O estudante deve ter entre 6 e 17 anos e ter o gênero informado.");
+
         return getReference(age, student.getGender());
     }
 

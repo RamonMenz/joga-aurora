@@ -1,9 +1,7 @@
 package br.feevale.joga_aurora.controller;
 
 import br.feevale.joga_aurora.model.Attendance;
-import br.feevale.joga_aurora.model.ClassroomAttendance;
 import br.feevale.joga_aurora.service.AttendanceService;
-import br.feevale.joga_aurora.service.ClassroomAttendanceService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -27,7 +26,6 @@ import java.util.Objects;
 public class AttendanceController {
 
     private final AttendanceService service;
-    private final ClassroomAttendanceService classroomAttendanceService;
 
     @GetMapping
     public ResponseEntity<?> getAll(final Pageable pageable) {
@@ -78,8 +76,8 @@ public class AttendanceController {
 
     @GetMapping("/turma/{id}")
     public ResponseEntity<?> getAllAttendances(@PathVariable final String id,
-                                               @RequestParam(required = false) final Date attendanceDate) {
-        final var classroomAttendanceList = classroomAttendanceService.getAll(id, attendanceDate);
+                                               @RequestParam(required = false, value = "data_presenca") final Date attendanceDate) {
+        final var classroomAttendanceList = service.getAllByClassroomId(id, attendanceDate);
 
         if (Objects.nonNull(classroomAttendanceList))
             return ResponseEntity.ok(classroomAttendanceList);
@@ -89,9 +87,9 @@ public class AttendanceController {
 
     @PostMapping("/turma/{id}")
     public ResponseEntity<?> insertAttendances(@PathVariable final String id,
-                                               @RequestParam(required = false) final Date attendanceDate,
-                                               @RequestBody final ClassroomAttendance request) {
-        final var classroomAttendanceList = classroomAttendanceService.insert(id, attendanceDate, request);
+                                               @RequestParam(required = false, value = "data_presenca") final Date attendanceDate,
+                                               @RequestBody final List<Attendance> request) {
+        final var classroomAttendanceList = service.insertByClassroomId(id, attendanceDate, request);
 
         if (Objects.nonNull(classroomAttendanceList))
             return ResponseEntity.status(HttpStatus.CREATED).body(classroomAttendanceList);
@@ -101,9 +99,9 @@ public class AttendanceController {
 
     @PutMapping("/turma/{id}")
     public ResponseEntity<?> updateAttendances(@PathVariable final String id,
-                                               @RequestParam(required = false) final Date attendanceDate,
-                                               @RequestBody final ClassroomAttendance request) {
-        final var classroomAttendanceList = classroomAttendanceService.update(id, attendanceDate, request);
+                                               @RequestParam(required = false, value = "data_presenca") final Date attendanceDate,
+                                               @RequestBody final List<Attendance> request) {
+        final var classroomAttendanceList = service.updateByClassroomId(id, attendanceDate, request);
 
         if (Objects.nonNull(classroomAttendanceList))
             return ResponseEntity.ok(classroomAttendanceList);
