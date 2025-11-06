@@ -127,7 +127,8 @@ public class AttendanceService {
     @Transactional
     public List<Attendance> insertByClassroomId(final String id, final Date attendanceDate, final List<Attendance> request) {
         final var start = Instant.now();
-        log.info("status={} id={} attendanceDate={} requestSize={}", STARTED, id, attendanceDate, request.size());
+        final var date = DateUtil.thisDateOrToday(attendanceDate);
+        log.info("status={} id={} attendanceDate={} requestSize={}", STARTED, id, date, request.size());
 
         final var classroomEntity = classroomRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, NotFoundEnum.CLASSROOM.getMessage()));
@@ -146,7 +147,7 @@ public class AttendanceService {
                                     attendance.student(),
                                     Objects.nonNull(attendance.attendanceDate())
                                             ? attendance.attendanceDate()
-                                            : DateUtil.thisDateOrToday(attendanceDate),
+                                            : date,
                                     Objects.nonNull(attendance.status())
                                             ? attendance.status()
                                             : AttendanceStatusEnum.PRESENT));
@@ -154,14 +155,15 @@ public class AttendanceService {
                 .filter(Objects::nonNull)
                 .toList();
 
-        log.info("status={} id={} attendanceDate={} requestSize={} responseSize={} timeMillis={}", FINISHED, id, attendanceDate, request.size(), result.size(), Duration.between(start, Instant.now()).toMillis());
+        log.info("status={} id={} attendanceDate={} requestSize={} responseSize={} timeMillis={}", FINISHED, id, date, request.size(), result.size(), Duration.between(start, Instant.now()).toMillis());
         return result.stream().map(AttendanceMapper::toResponse).toList();
     }
 
     @Transactional
     public List<Attendance> updateByClassroomId(final String id, final Date attendanceDate, final List<Attendance> request) {
         final var start = Instant.now();
-        log.info("status={} id={} attendanceDate={} requestSize={}", STARTED, id, attendanceDate, request.size());
+        final var date = DateUtil.thisDateOrToday(attendanceDate);
+        log.info("status={} id={} attendanceDate={} requestSize={}", STARTED, id, date, request.size());
 
         final var classroomEntity = classroomRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, NotFoundEnum.CLASSROOM.getMessage()));
@@ -174,15 +176,15 @@ public class AttendanceService {
                         return null;
 
                     final var attendanceEntity = repository
-                            .findByStudent_IdAndAttendanceDate(student.getId(), attendanceDate).orElse(null);
+                            .findByStudent_IdAndAttendanceDate(student.getId(), date).orElse(null);
 
                     final var status = Objects.nonNull(attendance.status())
                             ? attendance.status()
                             : AttendanceStatusEnum.LATE;
 
-                    final var date = Objects.nonNull(attendance.attendanceDate())
+                    final var finalDate = Objects.nonNull(attendance.attendanceDate())
                             ? attendance.attendanceDate()
-                            : DateUtil.thisDateOrToday(attendanceDate);
+                            : date;
 
                     if (Objects.nonNull(attendanceEntity))
                         return saveAttendanceEntity(
@@ -190,7 +192,7 @@ public class AttendanceService {
                                 new Attendance(
                                         attendanceEntity.getId(),
                                         attendance.student(),
-                                        date,
+                                        finalDate,
                                         status));
 
                     return saveAttendanceEntity(
@@ -198,13 +200,13 @@ public class AttendanceService {
                             new Attendance(
                                     null,
                                     attendance.student(),
-                                    date,
+                                    finalDate,
                                     status));
                 })
                 .filter(Objects::nonNull)
                 .toList();
 
-        log.info("status={} id={} attendanceDate={} requestSize={} responseSize={} timeMillis={}", FINISHED, id, attendanceDate, request.size(), result.size(), Duration.between(start, Instant.now()).toMillis());
+        log.info("status={} id={} attendanceDate={} requestSize={} responseSize={} timeMillis={}", FINISHED, id, date, request.size(), result.size(), Duration.between(start, Instant.now()).toMillis());
         return result.stream().map(AttendanceMapper::toResponse).toList();
     }
 

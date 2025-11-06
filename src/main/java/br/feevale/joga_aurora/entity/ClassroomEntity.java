@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +27,7 @@ public class ClassroomEntity {
     private String name;
 
     @OneToMany(mappedBy = "classroom")
+    @OrderBy("name ASC")
     private List<StudentEntity> studentList;
 
 }

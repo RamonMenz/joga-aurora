@@ -15,6 +15,6 @@ CREATE TABLE physical_test (
     throw_two_kg_reference      char(1) NOT NULL,
 
     CONSTRAINT pk_physical_test PRIMARY KEY (id),
-    CONSTRAINT fk_physical_test_student FOREIGN KEY (student_id) REFERENCES student(id)
+    CONSTRAINT fk_physical_test_student FOREIGN KEY (student_id) REFERENCES student(id) ON DELETE CASCADE
 
 );

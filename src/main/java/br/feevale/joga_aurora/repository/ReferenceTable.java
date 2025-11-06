@@ -2,7 +2,6 @@ package br.feevale.joga_aurora.repository;
 
 import br.feevale.joga_aurora.entity.StudentEntity;
 import br.feevale.joga_aurora.enums.GenderEnum;
-import br.feevale.joga_aurora.model.Reference;
 import br.feevale.joga_aurora.util.DateUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,6 +15,19 @@ import static br.feevale.joga_aurora.enums.GenderEnum.MALE;
 public class ReferenceTable {
 
     private final Map<String, Reference> references = new HashMap<>();
+
+    public record Reference(
+            Integer age,
+            GenderEnum gender,
+            Double bmi,
+            Double waistHeightRatio,
+            Double sixMinutes,
+            Double flex,
+            Double rml,
+            Double twentyMeters,
+            Double throwTwoKg
+    ) {
+    }
 
     public ReferenceTable() {
         loadReferences();

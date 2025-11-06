@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,9 +40,11 @@ public class StudentEntity {
     private GenderEnum gender;
 
     @OneToMany(mappedBy = "student")
+    @OrderBy("collectionDate DESC")
     private List<BodyMeasurementEntity> bodyMeasurementList;
 
     @OneToMany(mappedBy = "student")
+    @OrderBy("collectionDate DESC")
     private List<PhysicalTestEntity> physicalTestList;
 
     @ManyToOne

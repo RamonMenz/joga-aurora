@@ -11,6 +11,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.sql.Date;
@@ -28,6 +30,7 @@ public class AttendanceEntity {
 
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false, columnDefinition = "varchar(36)")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private StudentEntity student;
 
     @Column(name = "attendance_date", nullable = false, columnDefinition = "date")

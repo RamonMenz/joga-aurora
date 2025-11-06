@@ -12,6 +12,6 @@ CREATE TABLE body_measurement (
     waist_height_ratio_reference    char(1) NOT NULL,
 
     CONSTRAINT pk_body_measurement PRIMARY KEY (id),
-    CONSTRAINT fk_body_measurement_student FOREIGN KEY (student_id) REFERENCES student(id)
+    CONSTRAINT fk_body_measurement_student FOREIGN KEY (student_id) REFERENCES student(id) ON DELETE CASCADE
 
 );

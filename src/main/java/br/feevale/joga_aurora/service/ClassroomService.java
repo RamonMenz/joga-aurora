@@ -39,7 +39,7 @@ public class ClassroomService {
         final var start = Instant.now();
         log.info("status={} pageable={}", STARTED, pageable);
 
-        final var result = repository.findAll(pageable);
+        final var result = repository.findAllByOrderByNameAsc(pageable);
 
         final var response = result.map(ClassroomMapper::toBasicResponse);
 
@@ -55,7 +55,6 @@ public class ClassroomService {
         final var result = repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, NotFoundEnum.CLASSROOM.getMessage()));
 
-        // TODO ver erro de fuso
         boolean attendanceDone = attendanceRepository
                 .existsByStudent_Classroom_IdAndAttendanceDate(result.getId(), Date.valueOf(LocalDate.now()));
 
