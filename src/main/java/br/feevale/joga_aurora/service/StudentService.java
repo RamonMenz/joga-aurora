@@ -3,6 +3,8 @@ package br.feevale.joga_aurora.service;
 import br.feevale.joga_aurora.entity.StudentEntity;
 import br.feevale.joga_aurora.enums.DeletedEnum;
 import br.feevale.joga_aurora.enums.NotFoundEnum;
+import br.feevale.joga_aurora.filter.StudentFilter;
+import br.feevale.joga_aurora.filter.StudentSpecification;
 import br.feevale.joga_aurora.mapper.StudentMapper;
 import br.feevale.joga_aurora.model.Student;
 import br.feevale.joga_aurora.repository.ClassroomRepository;
@@ -33,11 +35,13 @@ public class StudentService {
     private final ClassroomRepository classroomRepository;
 
     @Transactional(readOnly = true)
-    public Page<Student> getAll(final Pageable pageable) {
+    public Page<Student> getAll(final StudentFilter filter, final Pageable pageable) {
         final var start = Instant.now();
-        log.info("status={} pageable={}", STARTED, pageable);
+        log.info("status={} filter={} pageable={}", STARTED, filter, pageable);
 
-        final var result = repository.findAll(pageable);
+        final var specification = StudentSpecification.filterBy(filter);
+
+        final var result = repository.findAll(specification, pageable);
 
         final var response = result.map(StudentMapper::toBasicResponse);
 

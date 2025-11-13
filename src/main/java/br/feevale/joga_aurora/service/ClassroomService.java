@@ -55,12 +55,13 @@ public class ClassroomService {
         final var result = repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, NotFoundEnum.CLASSROOM.getMessage()));
 
+        final var attendanceDate = Date.valueOf(LocalDate.now());
         boolean attendanceDone = attendanceRepository
-                .existsByStudent_Classroom_IdAndAttendanceDate(result.getId(), Date.valueOf(LocalDate.now()));
+                .existsByStudent_Classroom_IdAndAttendanceDate(result.getId(), attendanceDate);
 
         final var response = ClassroomMapper.toCompleteResponse(result, attendanceDone);
 
-        log.info("status={} id={} response={} timeMillis={}", FINISHED, id, JsonUtil.objectToJson(response), Duration.between(start, Instant.now()).toMillis());
+        log.info("status={} id={} response={} attendanceDate={} timeMillis={}", FINISHED, id, JsonUtil.objectToJson(response), attendanceDate, Duration.between(start, Instant.now()).toMillis());
         return response;
     }
 

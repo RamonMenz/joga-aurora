@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Objects;
+
 @Getter
 @AllArgsConstructor
 public enum GenderEnum {
@@ -19,11 +21,15 @@ public enum GenderEnum {
 
     @JsonCreator
     public static GenderEnum fromCode(final String code) {
+        if (Objects.isNull(code))
+            return null;
+
         for (final var g : values()) {
             if (g.code.equals(code.toUpperCase())) {
                 return g;
             }
         }
+
         return NOT_INFORMED;
     }
 

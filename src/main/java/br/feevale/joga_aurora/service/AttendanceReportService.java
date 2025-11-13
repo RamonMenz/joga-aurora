@@ -31,7 +31,7 @@ import static br.feevale.joga_aurora.enums.LogStatusEnum.STARTED;
 @Slf4j
 @AllArgsConstructor
 @Service
-public class ClassroomAttendanceReportService {
+public class AttendanceReportService {
 
     private final StudentRepository studentRepository;
     private final AttendanceRepository attendanceRepository;

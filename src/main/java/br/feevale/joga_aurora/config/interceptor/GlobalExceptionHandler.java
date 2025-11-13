@@ -38,12 +38,17 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErrorResponse> handleDataIntegrityViolation(final DataIntegrityViolationException ex) {
+    public ResponseEntity<ErrorResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
         final var status = HttpStatus.BAD_REQUEST;
+        String mensagem = "Erro ao salvar registro. Já existe um item com os mesmos dados.";
+
+        if (Objects.nonNull(ex.getMessage()) && ex.getMessage().contains("uk_classroom")) {
+            mensagem = "Já existe uma turma com este nome.";
+        }
 
         return ResponseEntity
                 .status(status)
-                .body(buildAndLogErrorResponse(status, null, ex.getMessage()));
+                .body(buildAndLogErrorResponse(status, null, mensagem));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -82,7 +87,7 @@ public class GlobalExceptionHandler {
         else
             errorResponse = new ErrorResponse(LocalDateTime.now(), status.value(), error, message);
 
-        log.error("errorResponse={}", errorResponse);
+        log.error("timestamp={} status={} error={} message={}", errorResponse.timestamp, errorResponse.status, errorResponse.error, errorResponse.message);
         return errorResponse;
     }
 
