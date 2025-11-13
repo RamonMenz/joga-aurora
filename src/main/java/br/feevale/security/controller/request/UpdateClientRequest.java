@@ -1,23 +1,23 @@
 package br.feevale.security.controller.request;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 @Getter
 @Setter
 public class UpdateClientRequest {
 
     @NotBlank
-    @Min(5)
+    @Length(min = 5)
     private String name;
 
     @NotBlank
-    @Min(8)
+    @Length(min = 8)
     private String currentPassword;
 
-    @Min(8)
+    @Length(min = 8)
     private String newPassword;
 
 }

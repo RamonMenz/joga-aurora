@@ -36,7 +36,6 @@ public class StudentController {
             @RequestParam(required = false, value = "genero") final String gender,
             @RequestParam(required = false, value = "turma_id") final String classroomId,
             final Pageable pageable) {
-
         final var filter = new StudentFilter(name, birthDateStart, birthDateEnd, GenderEnum.fromCode(gender), classroomId);
 
         final var studentPage = service.getAll(filter, pageable);
