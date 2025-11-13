@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  joga-aurora:
+    image: joga-aurora
+    ports:
+      - "8080:8080"
+    environment:
+      DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5433/jogaauroradb
+      DATASOURCE_USERNAME: jogaaurora
+      DATASOURCE_PASSWORD: jogaaurora
+      APP_TIMEZONE: America/Sao_Paulo
+      CORS_ALLOWED_ORIGINS: http://localhost:5173
