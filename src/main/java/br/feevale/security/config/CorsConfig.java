@@ -23,17 +23,11 @@ public class CorsConfig {
                 .toList();
 
         final var corsConfiguration = new CorsConfiguration();
-        // corsConfiguration.setAllowedOriginPatterns(List.of("*"));
-        // corsConfiguration.setAllowedOrigins(origins);
-        // corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        // corsConfiguration.setAllowedHeaders(List.of("*"));
-        // corsConfiguration.setAllowCredentials(true);
-
-        // liberando tudo
-        corsConfiguration.setAllowedOriginPatterns(List.of("*")); // permite qualquer origem
-        corsConfiguration.setAllowedMethods(List.of("*"));        // permite todos os métodos (GET, POST, PUT, etc)
-        corsConfiguration.setAllowedHeaders(List.of("*"));        // permite todos os headers
-        corsConfiguration.setAllowCredentials(true);               // permite envio de cookies/autenticação se necessário
+        corsConfiguration.setAllowedOriginPatterns(List.of("*"));
+        corsConfiguration.setAllowedOrigins(origins);
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        corsConfiguration.setAllowedHeaders(List.of("*"));
+        corsConfiguration.setAllowCredentials(true);
 
         final var urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
