@@ -5,8 +5,8 @@
 
     <springProperty scope="context" name="applicationTitle" source="spring.application.name"/>
 
-    <conversionRule conversionWord="spanId" converterClass="br.feevale.joga_aurora.config.logging.SpanConverter" />
-    <conversionRule conversionWord="traceId" converterClass="br.feevale.joga_aurora.config.logging.TraceConverter" />
+    <conversionRule conversionWord="spanId" class="br.feevale.joga_aurora.config.logging.SpanConverter" />
+    <conversionRule conversionWord="traceId" class="br.feevale.joga_aurora.config.logging.TraceConverter" />
 
     <springProfile name="default">
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
