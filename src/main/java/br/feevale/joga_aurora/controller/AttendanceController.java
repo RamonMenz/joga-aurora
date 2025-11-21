@@ -2,12 +2,9 @@ package br.feevale.joga_aurora.controller;
 
 import br.feevale.joga_aurora.model.Attendance;
 import br.feevale.joga_aurora.service.AttendanceService;
-import br.feevale.joga_aurora.service.AttendanceReportService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +26,6 @@ import java.util.Objects;
 public class AttendanceController {
 
     private final AttendanceService service;
-    private final AttendanceReportService attendanceReportService;
 
     @GetMapping
     public ResponseEntity<?> getAll(final Pageable pageable) {
@@ -111,21 +107,6 @@ public class AttendanceController {
             return ResponseEntity.ok(classroomAttendanceList);
 
         return ResponseEntity.notFound().build();
-    }
-
-    @GetMapping("/turma/{id}/relatorio")
-    public ResponseEntity<?> getAttendancesReport(@PathVariable final String id,
-                                                  @RequestParam(name = "dataInicial") final Date startDate,
-                                                  @RequestParam(name = "dataFinal") final Date endDate) {
-        final var report = attendanceReportService.getAttendancesReport(id, startDate, endDate);
-
-        if (Objects.nonNull(report))
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=attendance_report.xlsx")
-                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                    .body(report);
-
-        return ResponseEntity.badRequest().build();
     }
 
 }

@@ -40,8 +40,7 @@ public class AttendanceReportService {
         final var start = Instant.now();
         log.info("status={} id={} startDate={} endDate={}", STARTED, id, startDate, endDate);
 
-        final var students = studentRepository
-                .findByClassroom_IdOrderByNameAsc(id);
+        final var students = studentRepository.findByClassroom_IdOrderByNameAsc(id);
 
         final var attendances = attendanceRepository
                 .findByStudent_Classroom_IdAndAttendanceDateBetweenOrderByAttendanceDateAsc(id, startDate, endDate);
