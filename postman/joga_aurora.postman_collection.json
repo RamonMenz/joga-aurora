@@ -140,12 +140,42 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/estudante",
+							"raw": "{{host}}/estudante?page=0&size=10&nome=ANA&data_nascimento_ini=2015-01-01&data_nascimento_fim=2015-07-01&genero=F&turma_id=classroo-m000-0000-test-000000000011",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"estudante"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "nome",
+									"value": "ANA"
+								},
+								{
+									"key": "data_nascimento_ini",
+									"value": "2015-01-01"
+								},
+								{
+									"key": "data_nascimento_fim",
+									"value": "2015-07-01"
+								},
+								{
+									"key": "genero",
+									"value": "F"
+								},
+								{
+									"key": "turma_id",
+									"value": "classroo-m000-0000-test-000000000011"
+								}
 							]
 						}
 					},
