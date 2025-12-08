@@ -1,10 +1,10 @@
--- 🔹 Inserir Turmas
+-- Inserir Turmas
 INSERT INTO classroom (id, name)
 VALUES
     ('classroo-m000-0000-test-000000000011', '1A'),
     ('classroo-m000-0000-test-000000000012', '1B');
 
--- 🔹 Inserir Estudantes da Turma 1A
+-- Inserir Estudantes da Turma 1A
 INSERT INTO student (id, name, birth_date, gender, classroom_id) VALUES
     ('student0-0000-0000-test-000000000001', 'Ana Souza', '2015-04-12', 'F', 'classroo-m000-0000-test-000000000011'),
     ('student0-0000-0000-test-000000000002', 'Bruno Lima', '2015-03-09', 'M', 'classroo-m000-0000-test-000000000011'),
@@ -17,7 +17,7 @@ INSERT INTO student (id, name, birth_date, gender, classroom_id) VALUES
     ('student0-0000-0000-test-000000000009', 'Igor Santos', '2015-09-11', 'M', 'classroo-m000-0000-test-000000000011'),
     ('student0-0000-0000-test-000000000010', 'Juliana Alves', '2015-10-01', 'F', 'classroo-m000-0000-test-000000000011');
 
--- 🔹 Inserir Estudantes da Turma 1B
+-- Inserir Estudantes da Turma 1B
 INSERT INTO student (id, name, birth_date, gender, classroom_id) VALUES
     ('student0-0000-0000-test-000000000011', 'Alice Barros', '2015-05-05', 'F', 'classroo-m000-0000-test-000000000012'),
     ('student0-0000-0000-test-000000000012', 'Breno Costa', '2015-04-22', 'M', 'classroo-m000-0000-test-000000000012'),
