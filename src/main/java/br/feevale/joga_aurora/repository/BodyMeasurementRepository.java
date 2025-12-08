@@ -8,6 +8,10 @@ import java.util.List;
 
 public interface BodyMeasurementRepository extends JpaRepository<BodyMeasurementEntity, String> {
 
-    List<BodyMeasurementEntity> findByStudent_Classroom_IdAndCollectionDateBetweenOrderByStudent_NameAscCollectionDateAsc(final String classroomId, final Date startDate, final Date endDate);
+    List<BodyMeasurementEntity> findByStudent_Classroom_IdAndCollectionDateBetweenOrderByStudent_NameAscCollectionDateAsc(
+            final String classroomId, 
+            final Date startDate, 
+            final Date endDate
+    );
 
 }

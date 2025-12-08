@@ -23,6 +23,7 @@ public class CorsConfig {
                 .toList();
 
         final var corsConfiguration = new CorsConfiguration();
+//        corsConfiguration.setAllowedOriginPatterns(List.of("*"));
         corsConfiguration.setAllowedOrigins(origins);
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(List.of("*"));

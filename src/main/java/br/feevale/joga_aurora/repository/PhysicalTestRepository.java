@@ -8,6 +8,10 @@ import java.util.List;
 
 public interface PhysicalTestRepository extends JpaRepository<PhysicalTestEntity, String> {
 
-    List<PhysicalTestEntity> findByStudent_Classroom_IdAndCollectionDateBetweenOrderByStudent_NameAscCollectionDateAsc(final String classroomId, final Date startDate, final Date endDate);
+    List<PhysicalTestEntity> findByStudent_Classroom_IdAndCollectionDateBetweenOrderByStudent_NameAscCollectionDateAsc(
+            final String classroomId, 
+            final Date startDate, 
+            final Date endDate
+    );
 
 }
