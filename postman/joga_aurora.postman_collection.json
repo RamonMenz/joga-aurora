@@ -909,15 +909,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/turma/{{classroom_id}}/presenca/relatorio?dataInicial=2025-01-01&dataFinal=2025-12-31",
+							"raw": "{{host}}/relatorio/presenca/turma/{{classroom_id}}?dataInicial=2025-01-01&dataFinal=2025-12-31",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"turma",
-								"{{classroom_id}}",
+								"relatorio",
 								"presenca",
-								"relatorio"
+								"turma",
+								"{{classroom_id}}"
 							],
 							"query": [
 								{
